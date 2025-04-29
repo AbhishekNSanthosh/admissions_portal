@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { BiLogOut } from "react-icons/bi";
+import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 
 export default function Sidebar() {
@@ -11,13 +12,18 @@ export default function Sidebar() {
   const menuItems = [
     {
       title: "Home",
-      link: "/dashboard",
+      link: "/dashboard/home",
       icon: <FaHome className="text-[22px]" />,
+    },
+    {
+      title: "Application",
+      link: "/dashboard/application",
+      icon: <IoIosApps className="text-[22px]" />,
     },
   ];
 
   return (
-    <div className="w-[15vw] h-screen fixed border border-r-gray-300">
+    <div className="w-[15vw] h-screen fixed border bg-white border-r-gray-200">
       <div className="px-[1vw] py-[2vh]">
         <Image
           src={"/logo.png"}
@@ -35,7 +41,7 @@ export default function Sidebar() {
         {menuItems?.map((menuItem, index) => (
           <Link
             className={`flex text-gray-700 flex-row items-center gap-2 text-2xl py-2 hoverColor relative w-full px-[2vw] ${
-              location === menuItem?.link && "bg-primary-100 text-primary-600 font-semibold"
+              location?.includes(menuItem?.link) && "bg-primary-100 text-primary-600 font-medium"
             }`}
             key={index}
             href={menuItem?.link}

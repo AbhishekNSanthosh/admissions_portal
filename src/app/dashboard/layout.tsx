@@ -27,7 +27,7 @@ export default function RootLayout({
         <div className="w-full">
           <Topbar user={user} />
         </div>
-        <div className="pt-[13vh] pl-[1vw]">{children}</div>
+        <div className="mt-[14vh] w-[83.5vw] h-full pl-[1vw] overflow-y-auto">{children}</div>
       </div>
     </div>
   );

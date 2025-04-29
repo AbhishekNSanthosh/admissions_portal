@@ -7,7 +7,7 @@ export default function Topbar({ user }: { user: any }) {
   const photoURL = user?.photoURL;
 
   return (
-    <div className="w-[85vw] h-[12vh] fixed flex items-center justify-between px-8 border border-b-gray-300">
+    <div className="w-[85vw] h-[12vh] bg-white fixed flex items-center justify-between px-8 border border-b-gray-200">
       {/* Left side - Welcome message */}
       <div className="text-lg font-semibold text-primary-600">
         {isLoading ? (
@@ -27,6 +27,7 @@ export default function Topbar({ user }: { user: any }) {
             src={photoURL}
             alt="Profile"
             width={45}
+            draggable={false}
             height={45}
             className="rounded-full object-cover"
             onError={(e) => {
