@@ -10,23 +10,32 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
+ 
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "firebasestorage.googleapis.com",
+        pathname: "/**",
       },
       {
         protocol: "http",
-        hostname: "**.localhost", // Allow all subdomains on localhost
+        hostname: "**.localhost",
+        pathname: "/**",
       },
       {
         protocol: "http",
-        hostname: "localhost", // Explicitly allow localhost
+        hostname: "localhost",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
       },
     ],
-    domains: ["lh3.googleusercontent.com"],
-  },
+  }
+  
 };
 
 export default nextConfig;

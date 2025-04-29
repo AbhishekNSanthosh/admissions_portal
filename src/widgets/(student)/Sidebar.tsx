@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -6,6 +6,7 @@ import React from "react";
 import { BiLogOut } from "react-icons/bi";
 import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
+import { MdScheduleSend } from "react-icons/md";
 
 export default function Sidebar() {
   const location = usePathname();
@@ -19,6 +20,11 @@ export default function Sidebar() {
       title: "Application",
       link: "/dashboard/application",
       icon: <IoIosApps className="text-[22px]" />,
+    },
+    {
+      title: "Drafts",
+      link: "/dashboard/drafts",
+      icon: <MdScheduleSend className="text-[22px]" />,
     },
   ];
 
@@ -41,7 +47,8 @@ export default function Sidebar() {
         {menuItems?.map((menuItem, index) => (
           <Link
             className={`flex text-gray-700 flex-row items-center gap-2 text-2xl py-2 hoverColor relative w-full px-[2vw] ${
-              location?.includes(menuItem?.link) && "bg-primary-100 text-primary-600 font-medium"
+              location?.includes(menuItem?.link) &&
+              "bg-primary-100 text-primary-600 font-medium"
             }`}
             key={index}
             href={menuItem?.link}

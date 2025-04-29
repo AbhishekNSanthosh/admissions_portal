@@ -46,6 +46,7 @@ export default function Home() {
     router.push(`/`);
   };
 
+
   if (loading) {
     return <div className='w-full h-full items-center justify-center flex'>Loading...</div>;
   }

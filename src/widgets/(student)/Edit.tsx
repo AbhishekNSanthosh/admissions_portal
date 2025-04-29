@@ -11,11 +11,12 @@ import {
   addDoc,
   doc,
   deleteDoc,
+  getDoc,
 } from "firebase/firestore";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Application } from "../../common/interface/interface";
 
-export default function LateralEntry() {
+export default function Edit() {
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [draftId, setDraftId] = useState("");
@@ -80,6 +81,8 @@ export default function LateralEntry() {
   });
   const location = usePathname();
   console.log(location?.split("/")[4]);
+  const params  = useParams();
+  console.log("Params: ",params?.appId)
 
   useEffect(() => {
     const auth = getAuth(app);
@@ -139,9 +142,9 @@ export default function LateralEntry() {
       );
 
       // If there's a draftId, delete the corresponding draft
-      if (draftId && draftId !== "") {
-        await deleteDoc(doc(db, "drafts", draftId));
-        console.log("Draft deleted with ID:", draftId);
+      if (params?.appId && params?.appId !== "") {
+        await deleteDoc(doc(db, "drafts", params?.appId as string));
+        console.log("Draft deleted with ID:", params?.appId);
       }
 
       console.log("Application submitted with Firestore ID:", docRef.id);
@@ -197,26 +200,27 @@ export default function LateralEntry() {
   useEffect(() => {
     const fetchApplication = async () => {
       setIsLoading(true);
-      const auth = getAuth();
-      const currentUser = auth.currentUser;
-
-      if (!currentUser) return;
-
-      const q = query(
-        collection(db, "drafts"),
-        where("email", "==", currentUser.email),
-        where("category", "==", "lateral_entry")
-      );
-
+    
       try {
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const docData = querySnapshot.docs[0].data();
-          // setApplication(docData as Application); // cast to your Application type
-          const doc = querySnapshot.docs[0];
-          console.log("Document ID:", doc.id);
-          setDraftId(doc?.id);
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+    
+        if (!currentUser || !params?.appId) return;
+    
+        const docRef = doc(db, "drafts", params?.appId as string);
+        const docSnap = await getDoc(docRef);
+    
+        if (docSnap.exists()) {
+          const docData = docSnap.data();
+          if (docData.email === currentUser.email && docData.category === "lateral_entry") {
+            setApplication(docData as Application);
+            setDraftId(docSnap.id);
+            console.log("Document ID:", docSnap.id);
+          } else {
+            console.warn("Draft found, but email or category does not match.");
+          }
+        } else {
+          console.warn("No such draft found.");
         }
       } catch (error) {
         console.error("Error fetching application:", error);
@@ -229,7 +233,7 @@ export default function LateralEntry() {
   }, []);
 
   console.log("Applications: ", application);
-  console.log("Id",draftId);
+  console.log("Id", draftId);
 
   if (isLoading) {
     return (
