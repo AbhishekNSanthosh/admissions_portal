@@ -7,7 +7,7 @@ export default function Topbar({ user }: { user: any }) {
   const photoURL = user?.photoURL;
 
   return (
-    <div className="w-[84vw] h-[12vh] fixed flex items-center justify-between px-8 border border-b-gray-300">
+    <div className="w-[85vw] h-[12vh] fixed flex items-center justify-between px-8 border border-b-gray-300">
       {/* Left side - Welcome message */}
       <div className="text-lg font-semibold text-primary-600">
         {isLoading ? (

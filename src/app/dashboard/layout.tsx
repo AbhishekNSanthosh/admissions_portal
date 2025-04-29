@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <div className="flex flex-row items-center w-full h-screen">
       <Sidebar />
-      <div className="pl-[16vw] flex flex-col items-center justify-start w-full h-screen">
+      <div className="pl-[15vw] flex flex-col items-center justify-start w-full h-screen">
         <div className="w-full">
           <Topbar user={user} />
         </div>
