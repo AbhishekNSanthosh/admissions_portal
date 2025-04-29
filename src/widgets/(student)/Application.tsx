@@ -65,15 +65,14 @@ export default function Application() {
     setShowModal(false);
     router.push(`/`);
   };
-  
-  console.log(showModal)
+
+  console.log(showModal);
 
   if (loading) return <div className="p-4">Loading applications...</div>;
 
   return (
     <div className="flex flex-col relative p-2">
       <div className="flex justify-between items-center mb-6">
-      
         <h1 className="text-2xl font-semibold">Your Applications</h1>
         <div className="flex space-x-4">
           <Link href="/dashboard/drafts">
@@ -95,7 +94,11 @@ export default function Application() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {applications.map((app) => (
-            <div key={app.id} className="p-4 bg-white border rounded shadow-sm">
+            <Link
+              href={"/dashboard/application/" + app.id}
+              key={app.id}
+              className="p-4 bg-white border rounded shadow-sm"
+            >
               <p>
                 <strong>Name:</strong> {app.firstName} {app.lastName}
               </p>
@@ -125,7 +128,7 @@ export default function Application() {
                   Download
                 </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
