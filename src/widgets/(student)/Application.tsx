@@ -41,8 +41,7 @@ export default function Application() {
   }, []);
 
   const handleView = (id: string) => {
-    // Redirect to a view page for the application
-    window.location.href = `/application/${id}`;
+    router.push("/dashboard/applciations/" + id);
   };
 
   const handleDownload = (app: any) => {
@@ -94,8 +93,8 @@ export default function Application() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {applications.map((app) => (
-            <Link
-              href={"/dashboard/application/" + app.id}
+            <div
+              // href={"/dashboard/application/" + app.id}
               key={app.id}
               className="p-4 bg-white border rounded shadow-sm"
             >
@@ -122,13 +121,15 @@ export default function Application() {
                 </button>
                 <button
                   className="bg-gray-700 text-white flex items-center justify-center gap-2 px-3 py-1 rounded hover:bg-gray-800 text-sm"
-                  onClick={() => handleDownload(app)}
+                  onClick={() => {
+                    router.push("/dashboard/application/download/" + app?.id);
+                  }}
                 >
                   <MdFileDownload className="text-[19px]" />
                   Download
                 </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
