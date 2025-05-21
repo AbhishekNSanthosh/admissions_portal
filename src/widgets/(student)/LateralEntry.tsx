@@ -2180,7 +2180,7 @@ export default function LateralEntry() {
           <div className="flex flex-col gap-1">
             <h6 className="font-semibold">Fee Payment</h6>
             <span className="text-gray-700 text-sm">
-              Application fee: ₹200 (Non-refundable)
+              Application fee: ₹500 (Non-refundable)
             </span>
           </div>
 
@@ -2189,7 +2189,7 @@ export default function LateralEntry() {
             <div className="border border-gray-200 rounded-lg p-4">
               <div className="flex flex-col gap-3">
                 <h6 className="font-medium text-gray-800">Pay via UPI ID</h6>
-
+{/* 
                 <div className="flex items-center gap-2 bg-gray-50 p-3 rounded-md">
                   <div className="bg-blue-100 p-2 rounded-full">
                     <svg
@@ -2209,7 +2209,7 @@ export default function LateralEntry() {
                     <p className="text-sm text-gray-500">Our UPI ID</p>
                     <p className="font-semibold">CARMELPOLY@FBL</p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mt-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -2263,8 +2263,8 @@ export default function LateralEntry() {
                       <Image
                         src="/qr.png"
                         alt="UPI Payment QR Code"
-                        width={160}
-                        height={160}
+                        width={300}
+                        height={300}
                         className="w-full h-full object-contain"
                         id="qr-code-image" // Added ID for download reference
                       />
