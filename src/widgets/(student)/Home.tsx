@@ -95,7 +95,7 @@ export default function Home() {
         {/* Modal */}
         {showModal && (
           <div className="fixed w-[85vw] h-[88vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[25vw]">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-[25vw]">
               <h2 className="text-lg font-semibold mb-4 text-center">
                 Select Admission Type
               </h2>
@@ -107,20 +107,22 @@ export default function Home() {
                   >
                     Management Quota - Lateral Entry
                   </Link>
-                   <Link
-                    href={"/dashboard/application/management/regular"}
-                    onClick={() =>
-                      handleOptionSelect("Management Quota - Regular")
+                  <Link
+                    href={
+                      "/dashboard/application/management/merit-lateral-entry"
                     }
+                    className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
+                  >
+                    Management Merit - Lateral Entry
+                  </Link>
+                  <Link
+                    href={"/dashboard/application/management/regular"}
                     className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                   >
                     Management Quota - Regular
                   </Link>
-                   <Link
+                  <Link
                     href={"/dashboard/application/management/merit-regular"}
-                    onClick={() =>
-                      handleOptionSelect("Management Merit - Regular")
-                    }
                     className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                   >
                     Management Merit - Regular
@@ -159,10 +161,12 @@ export default function Home() {
         </div>
       </div>
       <div className="">
-        <span className="text-lg md:text-xl font-semibold">Recent Applications</span>
+        <span className="text-lg md:text-xl font-semibold">
+          Recent Applications
+        </span>
       </div>
       {showModal && (
-        <div className="fixed w-full md:w-[85vw] h-[88vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed w-[95vw] md:w-[85vw] h-[88vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg w-full  md:w-[25vw]">
             <h2 className="text-lg font-semibold mb-4 text-center">
               Select Admission Type
@@ -175,20 +179,20 @@ export default function Home() {
                 >
                   Management Quota - Lateral Entry
                 </Link>
-               <Link
-                    href={"/dashboard/application/management/regular"}
-                  onClick={() =>
-                    handleOptionSelect("Management Quota - Regular")
-                  }
+                <Link
+                  href={"/dashboard/application/management/merit-lateral-entry"}
+                  className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
+                >
+                  Management Merit - Lateral Entry
+                </Link>
+                <Link
+                  href={"/dashboard/application/management/regular"}
                   className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                 >
                   Management Quota - Regular
                 </Link>
-               <Link
-                    href={"/dashboard/application/management/merit-regular"}
-                  onClick={() =>
-                    handleOptionSelect("Management Merit - Regular")
-                  }
+                <Link
+                  href={"/dashboard/application/management/merit-regular"}
                   className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                 >
                   Management Merit - Regular
@@ -211,7 +215,14 @@ export default function Home() {
             className="bg-white rounded-lg p-4 border border-gray-200"
           >
             <h3 className="text-lg font-semibold text-blue-700 mb-2">
-             {app?.firstName ? <> {app.firstName} {app.lastName}</> : "N/A"}
+              {app?.firstName ? (
+                <>
+                  {" "}
+                  {app.firstName} {app.lastName}
+                </>
+              ) : (
+                "N/A"
+              )}
             </h3>
             <p className="text-gray-600 text-sm">Email: {app.email}</p>
             <p className="text-gray-600 text-sm">
@@ -222,8 +233,9 @@ export default function Home() {
             </p>
           </div>
         ))}
-         <div className="bg-white w-full mb-5 md:w-[25vw] border-2 border-dashed border-blue-400 rounded-lg p-6 flex flex-col items-center justify-center hover:bg-blue-50 transition">
-          <Link href={'/dashboard/application'}
+        <div className="bg-white w-full mb-5 md:w-[25vw] border-2 border-dashed border-blue-400 rounded-lg p-6 flex flex-col items-center justify-center hover:bg-blue-50 transition">
+          <Link
+            href={"/dashboard/application"}
             onClick={() => {
               setShowModal(true);
             }} // <-- implement this function

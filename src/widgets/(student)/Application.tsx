@@ -148,7 +148,7 @@ export default function Application() {
       )}
       {showModal && (
         <div className="fixed md:w-[86vw] w-[95vw] h-[89vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-[25vw]">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[95vw] md:w-[25vw]">
             <h2 className="text-lg font-semibold mb-4 text-center">
               Select Admission Type
             </h2>
