@@ -240,7 +240,8 @@ const ApplicationPDFDocument = ({
           <View style={styles.gridHalf}>
             <Text>
               <Text style={styles.boldText}>Name of the Applicant:</Text>{" "}
-              {application?.firstName || "Nill"} {application?.lastName || "Nill"}
+              {application?.firstName || "Nill"}{" "}
+              {application?.lastName || "Nill"}
             </Text>
             <Text>
               <Text style={styles.boldText}>Date of Birth:</Text>
@@ -260,7 +261,8 @@ const ApplicationPDFDocument = ({
           </View>
           <View style={styles.gridHalf}>
             <Text>
-              <Text style={styles.boldText}>Gender:</Text> {application?.gender || "Nill"}
+              <Text style={styles.boldText}>Gender:</Text>{" "}
+              {application?.gender || "Nill"}
             </Text>
             <Text>
               <Text style={styles.boldText}>Place of Birth:</Text>{" "}
@@ -274,7 +276,7 @@ const ApplicationPDFDocument = ({
               <Text style={styles.boldText}>Phone Number:</Text>{" "}
               {application?.contactNo || "Nill"}
             </Text>
-              <Text>
+            <Text>
               <Text style={styles.boldText}>Alternate Phone Number:</Text>{" "}
               {application?.alternateContactNo || "Nill"}
             </Text>
@@ -447,7 +449,16 @@ const ApplicationPDFDocument = ({
         {/* Signature Section */}
         <View style={[styles.signatureSection, { marginTop: 30 }]}>
           <Text>Place: _________________________</Text>
-          <Text>Date: 10.06.2024</Text>
+          <Text>
+            Date:{" "}
+            {new Date()
+              .toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+              })
+              .replace(/\//g, ".")}
+          </Text>
           <Text style={{ marginTop: 15 }}>
             Signature of the Candidate: _________________________
           </Text>
