@@ -14,22 +14,23 @@ export interface Guardian {
     [key: string]: string;
 }
 
+// english: string;
+// language: string;
+// hindi: string,
+// science: string;
+// physics: string,
+// chemistry: string,
+// computerScience: string,
+// mathematics: string,
+// firstLanguagePaperOne: string,
+// firstLanguagePaperTwo: string,
+// socialScience: string,
+// biology: string,
+// informationTechnology: string,
+// communicativeEnglish: string,
+
 export interface Marks {
     [key: string]: string;
-    // english: string;
-    // language: string;
-    // hindi: string,
-    // science: string;
-    // physics: string,
-    // chemistry: string,
-    // computerScience: string,
-    // mathematics: string,
-    // firstLanguagePaperOne: string,
-    // firstLanguagePaperTwo: string,
-    // socialScience: string,
-    // biology: string,
-    // informationTechnology: string,
-    // communicativeEnglish: string,
 }
 
 
@@ -52,6 +53,7 @@ export interface Application {
     placeOfBirth: string;
     gender: string;
     religion: string;
+    community: string;
     aadhaarNo: string;
     addressLine1: string;
     addressLine2: string;

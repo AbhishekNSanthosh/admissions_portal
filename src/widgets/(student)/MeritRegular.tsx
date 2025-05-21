@@ -27,7 +27,7 @@ import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
 
-export default function LateralEntry() {
+export default function MeritRegular() {
   const [user, setUser] = useState<any>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -94,7 +94,7 @@ export default function LateralEntry() {
     id: "",
     generatedId: "",
     category: "lateral_entry",
-    title: "Management Quota - Lateral Entry",
+    title: "Management Merit - Regular",
     preferenceOne: "",
     preferenceTwo: "",
     preferenceThree: "",
@@ -294,9 +294,9 @@ export default function LateralEntry() {
     "preferenceOne",
     "preferenceTwo",
     "preferenceThree",
-    "preferenceFour",
-    "preferenceFive",
-    "preferenceSix",
+    // "preferenceFour",
+    // "preferenceFive",
+    // "preferenceSix",
   ];
 
   const handlePreferenceChange = (key: PreferenceKey, value: string) => {
@@ -324,9 +324,9 @@ export default function LateralEntry() {
       "preferenceOne",
       "preferenceTwo",
       "preferenceThree",
-      "preferenceFour",
-      "preferenceFive",
-      "preferenceSix",
+    //   "preferenceFour",
+    //   "preferenceFive",
+    //   "preferenceSix",
     ];
 
     const hasGovtCourse = preferenceKeys.some((key) => {
@@ -343,9 +343,9 @@ export default function LateralEntry() {
     "Civil Engineering",
     "Mechanical Engineering",
     "Electrical & Electronics Engineering",
-    "Computer Science and Engineering",
-    "Automobile Engineering",
-    "Electronics Engineering",
+    // "Computer Science and Engineering",
+    // "Automobile Engineering",
+    // "Electronics Engineering",
   ];
 
   const getAvailableBranches = (currentKey: PreferenceKey) => {
@@ -682,7 +682,7 @@ export default function LateralEntry() {
     <div className=" flex items-start flex-col justify-center space-y-4">
       <div className="bg-white w-full h-auto py-5 px-4  rounded-[5px]">
         <h3 className="text-primary-600 font-semibold text-lg md:text-xl">
-          Management Quota - Lateral Entry
+          Management Merit - Regular
         </h3>
       </div>
 

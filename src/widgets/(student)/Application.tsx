@@ -109,28 +109,28 @@ export default function Application() {
                 <p className="text-xs italic">Application Id: {app.appId}</p>
               </div> */}
               <p>
-                <strong>Name:</strong> {app.firstName} {app.lastName}
+                <strong>Name:</strong> {app?.firstName} {app?.lastName}
               </p>
               <p>
-                <strong>Email:</strong> {app.email}
+                <strong>Email:</strong> {app?.email}
               </p>
               <p>
-                <strong>Category:</strong> {app.category}
+                <strong>Category:</strong> {app?.title}
               </p>
               <p>
-                <strong>Application No:</strong> {app.generatedId || "—"}
+                <strong>Application No:</strong> {app?.generatedId || "—"}
               </p>
 
               <div className="mt-4 flex gap-2">
-                <button
+                {/* <button
                   className="bg-primary-600 flex items-center justify-center gap-2 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
                   onClick={() => handleView(app.appId)}
                 >
                   <FaRegEye className="text-[19px]" />
                   View
-                </button>
+                </button> */}
                 <Link href={`/dashboard/application/download/${app?.appId}`}
-                  className="bg-gray-700 text-white flex items-center justify-center gap-2 px-3 py-1 rounded hover:bg-gray-800 text-sm"
+                  className="bg-primary-50 text-primary-700 font-semibold flex items-center justify-center gap-2 px-3 py-1 rounded hover:bg-gray-800 text-sm"
                   // onClick={() => {
                   //   router.push("/dashboard/application/download/" + app?.id);
                   // }}

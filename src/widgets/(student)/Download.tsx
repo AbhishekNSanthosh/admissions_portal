@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   logoContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginBottom: 7,
   },
   logo: {
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   },
   gridHalf: {
     width: "50%",
-    gap:3
+    gap: 3,
   },
   table: {
     width: "100%",
@@ -168,9 +168,10 @@ const ApplicationPDFDocument = ({
         <Text style={styles.subtitle}>
           Application for Polytechnic Admission 2024-2025
         </Text>
-        <Text style={{ marginBottom: 4 }}>Management Merit - Regular</Text>
+        <Text style={{ marginBottom: 4 }}>{application?.title}</Text>
         <Text style={{ fontSize: 8 }}>
-          Govt. Management Quota Application No. (www.polyadmission.org): 131752
+          Govt. Management Quota Application No. (www.polyadmission.org):{" "}
+          {application?.govtQuotaApplicationNo || "N/A"}
         </Text>
       </View>
 
@@ -178,8 +179,8 @@ const ApplicationPDFDocument = ({
 
       {/* Application Meta */}
       <View style={styles.metaInfo}>
-        <Text>Application Number: {application?.generatedId}</Text>
-        <Text>Index Score: 6.7875004</Text>
+        <Text>Application Number: {application?.generatedId || "Nill"}</Text>
+        {/* <Text>Index Score: 6.7875004</Text> */}
         <Text>Fees to be remitted: Rs. 200/-</Text>
       </View>
 
@@ -194,15 +195,42 @@ const ApplicationPDFDocument = ({
           }}
         >
           <Text>
-            <Text style={styles.boldText}>Preference 1:</Text> {application?.preferenceOne}
+            <Text style={styles.boldText}>Preference 1:</Text>{" "}
+            {application?.preferenceOne || "Nill"}
           </Text>
           <Text>
-            <Text style={styles.boldText}>Preference 2:</Text> NIL
+            <Text style={styles.boldText}>Preference 2:</Text>{" "}
+            {application?.preferenceTwo || "Nill"}
           </Text>
           <Text>
-            <Text style={styles.boldText}>Preference 3:</Text> NIL
+            <Text style={styles.boldText}>Preference 3:</Text>{" "}
+            {application?.preferenceThree || "Nill"}
           </Text>
         </View>
+        {application?.preferenceFour ||
+          application?.preferenceFive ||
+          (application?.preferenceFive && (
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                fontSize: 9,
+              }}
+            >
+              <Text>
+                <Text style={styles.boldText}>Preference 4:</Text>{" "}
+                {application?.preferenceFour || "Nill"}
+              </Text>
+              <Text>
+                <Text style={styles.boldText}>Preference 5:</Text>{" "}
+                {application?.preferenceFive || "Nill"}
+              </Text>
+              <Text>
+                <Text style={styles.boldText}>Preference 6:</Text>{" "}
+                {application?.preferenceSix || "Nill"}
+              </Text>
+            </View>
+          ))}
       </View>
 
       {/* Candidate Profile */}
@@ -212,40 +240,49 @@ const ApplicationPDFDocument = ({
           <View style={styles.gridHalf}>
             <Text>
               <Text style={styles.boldText}>Name of the Applicant:</Text>{" "}
-              {application?.firstName}{" "}{application?.lastName}
+              {application?.firstName || "Nill"} {application?.lastName || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Date of Birth:</Text> 27/12/2005
+              <Text style={styles.boldText}>Date of Birth:</Text>
+              {application?.dateOfBirth || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Religion:</Text> Hindu
+              <Text style={styles.boldText}>Religion:</Text>{" "}
+              {application?.religion || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Email:</Text>{" "}
-              ssreesanth025@gmail.com
+              <Text style={styles.boldText}>Email:</Text> {application?.email}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Aadhar Number:</Text> 937746347271
+              <Text style={styles.boldText}>Aadhar Number:</Text>{" "}
+              {application?.aadhaarNo || "Nill"}
             </Text>
           </View>
           <View style={styles.gridHalf}>
             <Text>
-              <Text style={styles.boldText}>Gender:</Text> Male
+              <Text style={styles.boldText}>Gender:</Text> {application?.gender || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Place of Birth:</Text> ALAPPUZHA
+              <Text style={styles.boldText}>Place of Birth:</Text>{" "}
+              {application?.placeOfBirth || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Community:</Text> EZHAVA
+              <Text style={styles.boldText}>Community:</Text>{" "}
+              {application?.community || "Nill"}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Phone Number:</Text> 8113053904
+              <Text style={styles.boldText}>Phone Number:</Text>{" "}
+              {application?.contactNo || "Nill"}
+            </Text>
+              <Text>
+              <Text style={styles.boldText}>Alternate Phone Number:</Text>{" "}
+              {application?.alternateContactNo || "Nill"}
             </Text>
           </View>
         </View>
         <Text style={{ marginTop: 4 }}>
-          <Text style={styles.boldText}>Address:</Text> Parampil, Mithrakkary,
-          Mithrakkary P O, Alappuzha, PIN Code: 689595, Kerala, India
+          <Text style={styles.boldText}>Address:</Text>{" "}
+          {application?.addressLine1 + " " + application?.addressLine2}
         </Text>
       </View>
 
@@ -264,11 +301,15 @@ const ApplicationPDFDocument = ({
           </View>
           {/* Table Row */}
           <View style={styles.tableRow}>
-            <Text style={[styles.tableCell, { flex: 0.8 }]}>SSLC</Text>
-            <Text style={[styles.tableCell, { flex: 2 }]}>
-              St. Xaviers HS Mithrakkary
+            <Text style={[styles.tableCell, { flex: 0.8 }]}>
+              {application?.course}
             </Text>
-            <Text style={[styles.tableCell, { flex: 1.2 }]}>Kerala State</Text>
+            <Text style={[styles.tableCell, { flex: 2 }]}>
+              {application?.institution}
+            </Text>
+            <Text style={[styles.tableCell, { flex: 1.2 }]}>
+              {application?.universityOrBoard}
+            </Text>
             <Text style={[styles.tableCell, styles.lastCell, { flex: 0.6 }]}>
               2022
             </Text>
@@ -285,8 +326,12 @@ const ApplicationPDFDocument = ({
             marginBottom: 6,
           }}
         >
-          <Text style={styles.boldText}>Qualifying Examination: SSLC</Text>
-          <Text style={styles.boldText}>Chances taken: 1</Text>
+          <Text style={styles.boldText}>
+            Qualifying Examination: {application?.course}
+          </Text>
+          <Text style={styles.boldText}>
+            Chances taken: {application?.chancesTaken}
+          </Text>
         </View>
         <View style={styles.table}>
           {/* Table Header */}
@@ -298,30 +343,21 @@ const ApplicationPDFDocument = ({
             </Text>
           </View>
           {/* Table Rows */}
-          {[
-            [1, "First Language – Paper I", "C"],
-            [2, "First Language – Paper II", "A+"],
-            [3, "English", "A"],
-            [4, "Hindi", "A+"],
-            [5, "Social Science", "C+"],
-            [6, "Physics", "B+"],
-            [7, "Chemistry", "B"],
-            [8, "Biology", "B+"],
-            [9, "Mathematics", "B"],
-            [10, "Information Technology", "A+"],
-          ].map(([no, subject, grade]) => (
-            <View key={no as number} style={styles.tableRow}>
-              <Text style={[styles.tableCell, { flex: 0.3 }]}>
-                {no as number}
-              </Text>
-              <Text style={[styles.tableCell, { flex: 2 }]}>
-                {subject as string}
-              </Text>
-              <Text style={[styles.tableCell, styles.lastCell, { flex: 0.4 }]}>
-                {grade as string}
-              </Text>
-            </View>
-          ))}
+          {Object.entries(application?.marks || {}).map(
+            ([subject, grade], index) => (
+              <View key={index} style={styles.tableRow}>
+                <Text style={[styles.tableCell, { flex: 0.3 }]}>
+                  {index + 1}
+                </Text>
+                <Text style={[styles.tableCell, { flex: 2 }]}>{subject}</Text>
+                <Text
+                  style={[styles.tableCell, styles.lastCell, { flex: 0.4 }]}
+                >
+                  {grade}
+                </Text>
+              </View>
+            )
+          )}
         </View>
       </View>
 
@@ -331,34 +367,55 @@ const ApplicationPDFDocument = ({
         <View style={styles.gridContainer}>
           <View style={styles.gridHalf}>
             <Text>
-              <Text style={styles.boldText}>Name of the Guardian:</Text> SASI
+              <Text style={styles.boldText}>Name of the Guardian:</Text>{" "}
+              {application?.guardian?.name}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Occupation:</Text> Fisherman
+              <Text style={styles.boldText}>Occupation:</Text>{" "}
+              {application?.guardian?.occupation}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Phone Number:</Text> 8113053904
+              <Text style={styles.boldText}>Phone Number:</Text>{" "}
+              {application?.guardian?.phoneNumber}
             </Text>
           </View>
           <View style={styles.gridHalf}>
             <Text>
               <Text style={styles.boldText}>Relationship with Applicant:</Text>{" "}
-              Father
+              {application?.guardian?.relationship}
             </Text>
             <Text>
-              <Text style={styles.boldText}>Monthly Income:</Text> 1000
+              <Text style={styles.boldText}>Monthly Income:</Text>{" "}
+              {application?.guardian?.monthlyIncome}
             </Text>
           </View>
         </View>
         <Text style={{ marginTop: 4 }}>
-          <Text style={styles.boldText}>Address (Residence):</Text> Parampil,
-          Mithrakkary, Mithrakkary P O, Alappuzha, PIN Code
+          <Text style={styles.boldText}>Address (Residence):</Text>{" "}
+          {application?.guardian?.addressLineOne +
+            " " +
+            application?.guardian?.addressLineTwo}
         </Text>
       </View>
     </Page>
 
     {/* New Page for Checklist */}
     <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Fee payment</Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            fontSize: 9,
+          }}
+        >
+          <Text>
+            <Text style={styles.boldText}>Transaction Id</Text>{" "}
+            {application?.transactionId || "Nill"}
+          </Text>
+        </View>
+      </View>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Checklist for the Applicant</Text>
 
@@ -396,6 +453,24 @@ const ApplicationPDFDocument = ({
           </Text>
         </View>
       </View>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 10,
+          left: 20,
+          right: 20,
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          fontSize: 8,
+          color: "#555",
+          borderTop: "1pt solid #eee",
+          paddingTop: 5,
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Carmel Polytechnic Admission</Text>
+        <Text>Generated on: {new Date().toLocaleString()}</Text>
+      </View>
     </Page>
   </Document>
 );
@@ -428,37 +503,45 @@ export default function Download() {
 
     fetchApplication();
   }, [appId]);
-
-  if (loading) return <div className="w-full h-full flex items-center justify-center">Loading...</div>;
-  if (!application) return <div className="w-full h-full flex items-center justify-center">No application data found</div>;
+  console.log(application);
+  if (loading)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  if (!application)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        No application data found
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
-    <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
-      Your Application PDF is Ready!
-    </h2>
-    <p className="text-gray-600 mb-4 text-center">
-      Click the button below to download your application as a professionally formatted PDF.
-    </p>
-  
-    <PDFDownloadLink
-      document={<ApplicationPDFDocument application={application} />}
-      fileName={`${
-        application?.firstName +
-          "_" +
-          application?.lastName  || "application"
-      }.pdf`}
-    >
-      {({ loading }) => (
-        <button
-          disabled={loading}
-          className="px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-primary-600 to-primary-500 rounded-full shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-300 disabled:opacity-50"
-        >
-          {loading ? "Preparing your document..." : "Download Your PDF"}
-        </button>
-      )}
-    </PDFDownloadLink>
-  </div>
-  
+      <h2 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+        Your Application PDF is Ready!
+      </h2>
+      <p className="text-gray-600 mb-4 text-center">
+        Click the button below to download your application as a professionally
+        formatted PDF.
+      </p>
+
+      <PDFDownloadLink
+        document={<ApplicationPDFDocument application={application} />}
+        fileName={`${
+          application?.firstName + "_" + application?.lastName || "application"
+        }.pdf`}
+      >
+        {({ loading }) => (
+          <button
+            disabled={loading}
+            className="px-6 py-3 text-lg font-medium text-white bg-gradient-to-r from-primary-600 to-primary-500 rounded-full shadow-lg hover:from-blue-700 hover:to-blue-600 transition-all duration-300 disabled:opacity-50"
+          >
+            {loading ? "Preparing your document..." : "Download Your PDF"}
+          </button>
+        )}
+      </PDFDownloadLink>
+    </div>
   );
 }
