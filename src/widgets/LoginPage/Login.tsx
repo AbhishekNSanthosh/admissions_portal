@@ -3,42 +3,51 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { app } from "@lib/firebase"; // adjust the path based on your project structure
+import { app } from "@lib/firebase";
 import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [user, setUser] = useState<any>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const router = useRouter();
+
   const handleGoogleSignIn = async () => {
     try {
+      setIsSigningIn(true);
       const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      console.log("User signed in:", result.user);
+      setUser(result.user);
       router.push("/dashboard");
-      setUser(result?.user);
-      // Redirect or do something after login
     } catch (error) {
       console.error("Error during sign-in:", error);
+      alert("Sign in failed. Please try again.");
+    } finally {
+      setIsSigningIn(false);
     }
   };
-useEffect(() => {
-  const auth = getAuth(app);
-  const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-    if (currentUser) {
-      setUser(currentUser);
-      router.push("/dashboard"); // ✅ Redirect only if logged in
-    }
-  });
-  return () => unsubscribe();
-}, []);
 
+  useEffect(() => {
+    const auth = getAuth(app);
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        router.push("/dashboard");
+      }
+      setIsCheckingAuth(false);
+    });
+    
+    return () => unsubscribe();
+  }, [router]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     router.push('/dashboard')
-  //   }
-  // }, []);
+  if (isCheckingAuth) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -68,20 +77,30 @@ useEffect(() => {
               The smarter way to manage your admissions.
             </span>
           </div>
-          {/* Google Sign-In Button */}
-          <div
-            className="flex cursor-pointer w-full md:w-auto flex-row items-center border-[1px] bg-white gap-3 border-gray-400 px-[3rem] py-3 rounded-md"
+          
+          <button
+            disabled={isSigningIn}
+            className={`flex cursor-pointer w-full md:w-auto flex-row items-center justify-center border-[1px] bg-white gap-3 border-gray-400 px-[3rem] py-3 rounded-md ${
+              isSigningIn ? "opacity-70" : ""
+            }`}
             onClick={handleGoogleSignIn}
           >
-            <Image
-              src={"/google.png"}
-              width={1000}
-              height={1000}
-              className="w-[2rem]"
-              alt=""
-            />
-            <span className="">Continue with Google</span>
-          </div>
+            {isSigningIn ? (
+              "Please wait..."
+            ) : (
+              <>
+                <Image
+                  src={"/google.png"}
+                  width={1000}
+                  height={1000}
+                  className="w-[2rem]"
+                  alt="Google logo"
+                />
+                <span>Continue with Google</span>
+              </>
+            )}
+          </button>
+          
           <div className="flex flex-col gap-1">
             <span className="text-gray-700">
               Seamless and secure sign-in with your Google account.
