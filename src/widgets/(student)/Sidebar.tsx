@@ -8,6 +8,7 @@ import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { MdScheduleSend } from "react-icons/md";
 import { getAuth, signOut } from "firebase/auth";
+import easyToast from "@components/CustomToast";
 
 export default function Sidebar() {
   const location = usePathname();
@@ -71,6 +72,10 @@ export default function Sidebar() {
               .then(() => {
                 router.push("/");
                 console.log("User signed out");
+                easyToast({
+                      message: "Logout Successful",
+                      type: "success",
+                    });
                 // Optionally redirect or show a message
               })
               .catch((error) => {

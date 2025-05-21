@@ -9,6 +9,9 @@ import { IoIosApps } from "react-icons/io";
 import { MdScheduleSend } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { BiLogOut } from "react-icons/bi";
+import { getAuth, signOut } from "firebase/auth";
+import easyToast from "@components/CustomToast";
 
 export default function Topbar({ user }: { user: any }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -154,6 +157,30 @@ export default function Topbar({ user }: { user: any }) {
                 <span className="text-[1.1rem]">{menuItem?.title}</span>
               </Link>
             ))}
+          </div>
+          <div className="py-2 flex flex-col px-[2vw] lg:flex-row w-full items-center justify-center absolute bottom-16 self-center">
+            <button
+              onClick={() => {
+                const auth = getAuth();
+                signOut(auth)
+                  .then(() => {
+                    router.push("/");
+                    console.log("User signed out");
+                    easyToast({
+                      message: "Logout Successful",
+                      type: "success",
+                    });
+                    // Optionally redirect or show a message
+                  })
+                  .catch((error) => {
+                    console.error("Error signing out:", error);
+                  });
+              }}
+              className="flex items-center justify-center w-full py-3 text-red-600 font-medium gap-2 rounded-[10px] bg-red-100"
+            >
+              <BiLogOut />
+              Logout
+            </button>
           </div>
           <div className="py-2 flex flex-col lg:flex-row w-full items-center justify-center absolute bottom-3 self-center">
             <div className="flex-1 flex items-center justify-between font-semibold text-sm text-gray-700">
