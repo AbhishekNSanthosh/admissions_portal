@@ -8,6 +8,7 @@ import Link from "next/link";
 import { MdFileDownload } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { MdOutlineAddCircleOutline } from "react-icons/md";
 
 export default function Application() {
   const [applications, setApplications] = useState<any[]>([]);
@@ -28,7 +29,7 @@ export default function Application() {
 
         const snapshot = await getDocs(q);
         const applicationData = snapshot.docs.map((doc) => ({
-          id: doc.id,
+          appId: doc.id,
           ...doc.data(),
         }));
 
@@ -71,19 +72,25 @@ export default function Application() {
 
   return (
     <div className="flex flex-col relative p-2">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold">Your Applications</h1>
+      <div className="flex justify-between items-center md:mb-6">
+        <h1 className="md:text-2xl text-lg font-semibold">Your Applications</h1>
         <div className="flex space-x-4">
-          <Link href="/dashboard/drafts">
-            <button className="bg-primary-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          {/* <Link href="/dashboard/drafts">
+            <button className="bg-primary-600 hidden md:flex text-white px-4 py-2 rounded-md hover:bg-blue-700">
               View Drafts
             </button>
-          </Link>
+          </Link> */}
           <button
             onClick={handleCreateNew}
-            className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+            className="bg-green-600 hidden md:flex text-white px-4 py-2 rounded-md hover:bg-green-700"
           >
             New Application
+          </button>
+          <button
+            onClick={handleCreateNew}
+            className="text-xl text-green-500 flex md:hidden px-4 py-2"
+          >
+           <MdOutlineAddCircleOutline className="text-4xl"/>
           </button>
         </div>
       </div>
@@ -92,12 +99,15 @@ export default function Application() {
         <p>No applications found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {applications.map((app) => (
+          {applications.map((app,index) => (
             <div
               // href={"/dashboard/application/" + app.id}
-              key={app.id}
+             key={`${app?.id ?? "no-id"}-${index}-${app?.firstName ?? "no-name"}`}
               className="p-4 bg-white border rounded shadow-sm"
             >
+              {/* <div className="">
+                <p className="text-xs italic">Application Id: {app.appId}</p>
+              </div> */}
               <p>
                 <strong>Name:</strong> {app.firstName} {app.lastName}
               </p>
@@ -108,34 +118,34 @@ export default function Application() {
                 <strong>Category:</strong> {app.category}
               </p>
               <p>
-                <strong>Generated ID:</strong> {app.generatedId || "—"}
+                <strong>Application No:</strong> {app.generatedId || "—"}
               </p>
 
               <div className="mt-4 flex gap-2">
                 <button
                   className="bg-primary-600 flex items-center justify-center gap-2 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm"
-                  onClick={() => handleView(app.id)}
+                  onClick={() => handleView(app.appId)}
                 >
                   <FaRegEye className="text-[19px]" />
                   View
                 </button>
-                <button
+                <Link href={`/dashboard/application/download/${app?.appId}`}
                   className="bg-gray-700 text-white flex items-center justify-center gap-2 px-3 py-1 rounded hover:bg-gray-800 text-sm"
-                  onClick={() => {
-                    router.push("/dashboard/application/download/" + app?.id);
-                  }}
+                  // onClick={() => {
+                  //   router.push("/dashboard/application/download/" + app?.id);
+                  // }}
                 >
                   <MdFileDownload className="text-[19px]" />
                   Download
-                </button>
+                </Link>
               </div>
             </div>
           ))}
         </div>
       )}
       {showModal && (
-        <div className="fixed w-[86vw] h-[89vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[25vw]">
+        <div className="fixed md:w-[86vw] w-[95vw] h-[89vh] backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-[25vw]">
             <h2 className="text-lg font-semibold mb-4 text-center">
               Select Admission Type
             </h2>

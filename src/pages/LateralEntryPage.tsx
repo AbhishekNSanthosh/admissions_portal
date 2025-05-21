@@ -1,8 +1,10 @@
-import LateralEntry from '@widgets/(student)/LateralEntry'
-import React from 'react'
+import LateralEntry from "@widgets/(student)/LateralEntry";
+import React from "react";
 
 export default function LateralEntryPage() {
   return (
-    <LateralEntry/>
-  )
+    <main className="px-[3vw] md:px-0">
+      <LateralEntry />
+    </main>
+  );
 }

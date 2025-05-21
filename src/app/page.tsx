@@ -1,4 +1,3 @@
-import LandingPageView from '@widgets/LandingPage'
 import React from 'react'
 import LoginPage from '../pages/LoginPage'
 

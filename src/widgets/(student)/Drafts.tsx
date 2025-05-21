@@ -1,6 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { db } from "@lib/firebase";
@@ -21,10 +28,15 @@ export default function Drafts() {
           where("email", "==", currentUser.email)
         );
         const snapshot = await getDocs(q);
-        const draftData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const draftData = snapshot.docs.map((doc) => {
+          console.log("doc.id:", doc.id);
+          console.log("doc.data():", doc.data());
+          return {
+            docId: doc.id,
+            ...doc.data(),
+          };
+        });
+console.log(draftData)
         setDrafts(draftData);
         setLoading(false);
       }
@@ -44,10 +56,16 @@ export default function Drafts() {
   };
 
   const handleEdit = (draftId: string) => {
+    console.log("draftIf", draftId);
     router.push(`/dashboard/application/edit/${draftId}`); // Ensure this route exists
   };
 
-  if (loading) return <div className="w-full h-full flex items-center justify-center">Loading drafts...</div>;
+  if (loading)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        Loading drafts...
+      </div>
+    );
 
   return (
     <div className="p-4">
@@ -56,19 +74,26 @@ export default function Drafts() {
         <p>No drafts found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {drafts.map((draft) => (
+          {drafts.map((draft,index) => (
             <div
-              key={draft.id}
+              key={draft.id+index}
               className="p-4 border rounded-md bg-white shadow-sm flex flex-col justify-between"
             >
               <div className="mb-2">
-                <p className="text-center font-semibold text-lg mb-3"> {draft.title}</p>
-                <p><strong>Name:</strong> {draft.firstName} {draft.lastName}</p>
-                <p><strong>Email:</strong> {draft.email}</p>
+                <p className="text-center font-semibold text-lg mb-3">
+                  {" "}
+                  {draft.title}
+                </p>
+                <p>
+                  <strong>Name:</strong> {draft.firstName} {draft.lastName}
+                </p>
+                <p>
+                  <strong>Email:</strong> {draft.email}
+                </p>
               </div>
               <div className="flex gap-2 mt-4">
                 <button
-                  onClick={() => handleEdit(draft.id)}
+                  onClick={() => handleEdit(draft.docId)}
                   className="px-3 py-1 bg-primary-600 text-white rounded hover:bg-blue-700 text-sm"
                 >
                   Edit

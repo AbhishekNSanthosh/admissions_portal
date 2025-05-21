@@ -1,15 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { BiLogOut } from "react-icons/bi";
 import { IoIosApps } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { MdScheduleSend } from "react-icons/md";
+import { getAuth, signOut } from "firebase/auth";
 
 export default function Sidebar() {
   const location = usePathname();
+  const router = useRouter();
   const menuItems = [
     {
       title: "Home",
@@ -21,15 +23,15 @@ export default function Sidebar() {
       link: "/dashboard/application",
       icon: <IoIosApps className="text-[22px]" />,
     },
-    {
-      title: "Drafts",
-      link: "/dashboard/drafts",
-      icon: <MdScheduleSend className="text-[22px]" />,
-    },
+    // {
+    //   title: "Drafts",
+    //   link: "/dashboard/drafts",
+    //   icon: <MdScheduleSend className="text-[22px]" />,
+    // },
   ];
 
   return (
-    <div className="w-[15vw] h-screen fixed border bg-white border-r-gray-200">
+    <div className="w-[15vw] h-screen fixed border bg-white border-r-gray-200 md:flex lg:flex lg:flex-col md:flex-col hidden">
       <div className="px-[1vw] py-[2vh]">
         <Image
           src={"/logo.png"}
@@ -62,7 +64,21 @@ export default function Sidebar() {
         ))}
       </div>
       <div className="absolute bottom-5 flex items-center justify-center w-full px-[1vw]">
-        <button className="flex items-center justify-center w-full py-3 text-red-600 font-medium gap-2 rounded-[10px] bg-red-100">
+        <button
+          onClick={() => {
+            const auth = getAuth();
+            signOut(auth)
+              .then(() => {
+                router.push("/");
+                console.log("User signed out");
+                // Optionally redirect or show a message
+              })
+              .catch((error) => {
+                console.error("Error signing out:", error);
+              });
+          }}
+          className="flex items-center justify-center w-full py-3 text-red-600 font-medium gap-2 rounded-[10px] bg-red-100"
+        >
           <BiLogOut />
           Logout
         </button>
