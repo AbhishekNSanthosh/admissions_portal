@@ -101,6 +101,7 @@ export default function LateralEntry() {
     category: "lateral_entry",
     title: "Management Quota - Lateral Entry",
     preferenceOne: "",
+    fee:"500",
     preferenceTwo: "",
     preferenceThree: "",
     preferenceFour: "",

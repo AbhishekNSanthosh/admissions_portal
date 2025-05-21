@@ -46,6 +46,7 @@ export interface Application {
     preferenceFour: string;
     preferenceFive: string;
     preferenceSix: string;
+      fee:string;
     firstName: string;
     lastName: string;
     dateOfBirth: string;

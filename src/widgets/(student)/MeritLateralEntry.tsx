@@ -26,6 +26,7 @@ import {
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
+import { uploadBytesResumable } from "firebase/storage";
 
 export default function MeritLateralEntry() {
   const [user, setUser] = useState<any>(null);
@@ -38,6 +39,7 @@ export default function MeritLateralEntry() {
   const [newSubject, setNewSubject] = useState("");
   const [certificateUrl, setCertificateUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [finished, setFinished] = useState(false);
   const [hasDoneGovtQuotaApplications, setHasDoneGovtQuotaApplications] =
@@ -117,6 +119,7 @@ export default function MeritLateralEntry() {
     addressLine1: "",
     addressLine2: "",
     street: "",
+      fee:"200",
     district: "",
     pinCode: "",
     contactNo: "",
@@ -207,26 +210,48 @@ export default function MeritLateralEntry() {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
-    setUploading(true);
     try {
+      if (!file) return;
+      setUploading(true);
+
       const storageRef = ref(
         storage,
         `certificates/${Date.now()}_${file.name}`
       );
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      setCertificateUrl(url);
-      setApplication((prev) => ({
-        ...prev,
-        certificateUrl: url, // replace with the actual URL you get from Firebase
-      }));
-      setUploaded(true);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Track progress
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(Math.round(progress));
+        },
+        (error) => {
+          // Handle errors
+          console.error("Upload failed:", error);
+          setUploading(false);
+        },
+        async () => {
+          // Upload complete
+          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          setCertificateUrl(url);
+          setApplication((prev) => ({
+            ...prev,
+            certificateUrl: url,
+          }));
+          setUploaded(true);
+          setUploading(false);
+          setIsModalOpen(false);
+        }
+      );
     } catch (error) {
-      console.error("Upload failed:", error);
-    } finally {
-      setIsModalOpen(false);
-      setUploading(false);
+      easyToast({
+        message: "Something went wrong",
+        type: "error",
+      });
     }
   };
 
@@ -1618,7 +1643,11 @@ export default function MeritLateralEntry() {
               )}
               <div className="flex flex-col">
                 <span className="text-sm text-gray-800">{file.name}</span>
-
+                {uploading && (
+                  <div className="text-sm text-gray-700 mt-2">
+                    Uploading: {uploadProgress}%
+                  </div>
+                )}
                 {!uploaded ? (
                   <div className="flex gap-2 mt-2">
                     <button

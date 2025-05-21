@@ -181,7 +181,7 @@ const ApplicationPDFDocument = ({
       <View style={styles.metaInfo}>
         <Text>Application Number: {application?.generatedId || "Nill"}</Text>
         {/* <Text>Index Score: 6.7875004</Text> */}
-        <Text>Fees to be remitted: Rs. 200/-</Text>
+        <Text>Fees to be remitted: Rs. {application?.fee}/-</Text>
       </View>
 
       {/* Branch Preference */}

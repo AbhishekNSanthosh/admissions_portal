@@ -26,6 +26,7 @@ import {
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
+import { uploadBytesResumable } from "firebase/storage";
 
 export default function MgRegular() {
   const [user, setUser] = useState<any>(null);
@@ -34,8 +35,9 @@ export default function MgRegular() {
   const [uploaded, setUploaded] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [draftId, setDraftId] = useState("");
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [selectedBoard, setSelectedBoard] = useState("");
-    const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [newSubject, setNewSubject] = useState("");
   const [certificateUrl, setCertificateUrl] = useState("");
   const [uploading, setUploading] = useState(false);
@@ -125,6 +127,7 @@ export default function MgRegular() {
     board: "", // For selecting board (e.g., HSE, CBSE)
     institution: "",
     universityOrBoard: "",
+    fee: "500",
     certificateUrl: "",
     passedOn: "",
     marks: {},
@@ -207,26 +210,48 @@ export default function MgRegular() {
   };
 
   const handleUpload = async () => {
-    if (!file) return;
-    setUploading(true);
     try {
+      if (!file) return;
+      setUploading(true);
+
       const storageRef = ref(
         storage,
         `certificates/${Date.now()}_${file.name}`
       );
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
-      setCertificateUrl(url);
-      setApplication((prev) => ({
-        ...prev,
-        certificateUrl: url, // replace with the actual URL you get from Firebase
-      }));
-      setUploaded(true);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Track progress
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(Math.round(progress));
+        },
+        (error) => {
+          // Handle errors
+          console.error("Upload failed:", error);
+          setUploading(false);
+        },
+        async () => {
+          // Upload complete
+          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          setCertificateUrl(url);
+          setApplication((prev) => ({
+            ...prev,
+            certificateUrl: url,
+          }));
+          setUploaded(true);
+          setUploading(false);
+          setIsModalOpen(false);
+        }
+      );
     } catch (error) {
-      console.error("Upload failed:", error);
-    } finally {
-      setIsModalOpen(false);
-      setUploading(false);
+      easyToast({
+        message: "Something went wrong",
+        type: "error",
+      });
     }
   };
 
@@ -401,7 +426,7 @@ export default function MgRegular() {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     // e.preventDefault();
-setSubmitting(true);
+    setSubmitting(true);
     try {
       const customId = await generateCustomId();
 
@@ -441,8 +466,8 @@ setSubmitting(true);
         type: "error",
         desc: "Please try again",
       });
-    }finally{
-      setSubmitting(false)
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -1624,7 +1649,11 @@ setSubmitting(true);
               )}
               <div className="flex flex-col">
                 <span className="text-sm text-gray-800">{file.name}</span>
-
+                {uploading && (
+                  <div className="text-sm text-gray-700 mt-2">
+                    Uploading: {uploadProgress}%
+                  </div>
+                )}
                 {!uploaded ? (
                   <div className="flex gap-2 mt-2">
                     <button
@@ -2368,7 +2397,7 @@ setSubmitting(true);
           >
             Save as draft
           </button> */}
-                 <button
+          <button
             disabled={submitting}
             className={`flex-1  py-3 rounded-[10px] text-white font-semibold ${
               submitting ? "bg-primary-200" : "bg-primary-600"
