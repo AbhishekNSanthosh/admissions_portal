@@ -340,12 +340,12 @@ export default function MeritRegular() {
   }, [application]);
 
   const branches = [
-    "Civil Engineering",
-    "Mechanical Engineering",
-    "Electrical & Electronics Engineering",
-    // "Computer Science and Engineering",
-    // "Automobile Engineering",
-    // "Electronics Engineering",
+    // "Civil Engineering",
+    // "Mechanical Engineering",
+    // "Electrical & Electronics Engineering",
+    "Computer Science and Engineering",
+    "Automobile Engineering",
+    "Electronics Engineering",
   ];
 
   const getAvailableBranches = (currentKey: PreferenceKey) => {
@@ -738,7 +738,6 @@ export default function MeritRegular() {
           </div>
         </div>
 
-        {hasDoneGovtQuotaApplications && (
           <div className="bg-white w-full h-auto py-5 px-4 rounded-[5px] space-y-4 flex flex-col">
             <div className="flex flex-col gap-1">
               <h6 className="font-semibold">
@@ -775,7 +774,6 @@ export default function MeritRegular() {
               />
             </div>
           </div>
-        )}
 
         <div className="bg-white w-full h-auto py-5 px-4 rounded-[5px] space-y-4 flex flex-col">
           <div className="flex flex-col gap-1">
@@ -1357,8 +1355,7 @@ export default function MeritRegular() {
                 }`}
               >
                 <option value="">Select Course</option>
-                <option value="XII">XII</option>
-                <option value="ITI">ITI</option>
+                <option value="X">X</option>
               </select>
             </div>
 
@@ -1429,11 +1426,10 @@ export default function MeritRegular() {
                 }`}
               >
                 <option value="">Select Board</option>
-                <option value="HSE">HSE</option>
-                <option value="Directorate General of Training (DGT)">
-                  Directorate General of Training (DGT)
-                </option>
+                <option value="SSLC">SSLC</option>
                 <option value="CBSE">CBSE</option>
+                <option value="ICSE">ICSE</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 

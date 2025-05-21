@@ -111,7 +111,7 @@ export default function MgRegular() {
     placeOfBirth: "",
     gender: "",
     religion: "",
-    community:"",
+    community: "",
     aadhaarNo: "",
     addressLine1: "",
     addressLine2: "",
@@ -294,9 +294,9 @@ export default function MgRegular() {
     "preferenceOne",
     "preferenceTwo",
     "preferenceThree",
-    // "preferenceFour",
-    // "preferenceFive",
-    // "preferenceSix",
+    "preferenceFour",
+    "preferenceFive",
+    "preferenceSix",
   ];
 
   const handlePreferenceChange = (key: PreferenceKey, value: string) => {
@@ -317,6 +317,9 @@ export default function MgRegular() {
     "Civil Engineering",
     "Mechanical Engineering",
     "Electrical & Electronics Engineering",
+    "Computer Science and Engineering",
+    "Automobile Engineering",
+    "Electronics Engineering",
   ];
 
   useEffect(() => {
@@ -324,9 +327,9 @@ export default function MgRegular() {
       "preferenceOne",
       "preferenceTwo",
       "preferenceThree",
-    //   "preferenceFour",
-    //   "preferenceFive",
-    //   "preferenceSix",
+      "preferenceFour",
+      "preferenceFive",
+      "preferenceSix",
     ];
 
     const hasGovtCourse = preferenceKeys.some((key) => {
@@ -340,9 +343,9 @@ export default function MgRegular() {
   }, [application]);
 
   const branches = [
-    // "Civil Engineering",
-    // "Mechanical Engineering",
-    // "Electrical & Electronics Engineering",
+    "Civil Engineering",
+    "Mechanical Engineering",
+    "Electrical & Electronics Engineering",
     "Computer Science and Engineering",
     "Automobile Engineering",
     "Electronics Engineering",
@@ -425,7 +428,7 @@ export default function MgRegular() {
         desc: "You can download the application from the Applications tab.",
       });
       setTimeout(() => {
-        router.push('/dashboard/application')
+        router.push("/dashboard/application");
       }, 300);
 
       console.log("Application submitted with Firestore ID:", docRef.id);
@@ -738,44 +741,42 @@ export default function MgRegular() {
           </div>
         </div>
 
-        {hasDoneGovtQuotaApplications && (
-          <div className="bg-white w-full h-auto py-5 px-4 rounded-[5px] space-y-4 flex flex-col">
-            <div className="flex flex-col gap-1">
-              <h6 className="font-semibold">
-                Govt. Management Quota Application No.
-                <span className="text-red-500">*</span>
-              </h6>
-              <span className="text-gray-700 text-sm">
-                Govt. Management Quota Application No. (www.polyadmission.org)
-              </span>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                onChange={(e) => {
-                  setApplication((prevStat) => ({
-                    ...prevStat,
-                    govtQuotaApplicationNo: e.target.value,
-                  }));
-
-                  if (application?.govtQuotaApplicationNo !== "") {
-                    setErrorState((prev) => ({
-                      ...prev,
-                      govtQuotaApplicationNo: false,
-                    }));
-                  }
-                }}
-                value={application.govtQuotaApplicationNo}
-                type="text"
-                placeholder="Eg: 131752"
-                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  errorState?.firstName
-                    ? "border-2 border-red-500"
-                    : "border border-gray-300"
-                }`}
-              />
-            </div>
+        <div className="bg-white w-full h-auto py-5 px-4 rounded-[5px] space-y-4 flex flex-col">
+          <div className="flex flex-col gap-1">
+            <h6 className="font-semibold">
+              Govt. Management Quota Application No.
+              <span className="text-red-500">*</span>
+            </h6>
+            <span className="text-gray-700 text-sm">
+              Govt. Management Quota Application No. (www.polyadmission.org)
+            </span>
           </div>
-        )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <input
+              onChange={(e) => {
+                setApplication((prevStat) => ({
+                  ...prevStat,
+                  govtQuotaApplicationNo: e.target.value,
+                }));
+
+                if (application?.govtQuotaApplicationNo !== "") {
+                  setErrorState((prev) => ({
+                    ...prev,
+                    govtQuotaApplicationNo: false,
+                  }));
+                }
+              }}
+              value={application.govtQuotaApplicationNo}
+              type="text"
+              placeholder="Eg: 131752"
+              className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                errorState?.firstName
+                  ? "border-2 border-red-500"
+                  : "border border-gray-300"
+              }`}
+            />
+          </div>
+        </div>
 
         <div className="bg-white w-full h-auto py-5 px-4 rounded-[5px] space-y-4 flex flex-col">
           <div className="flex flex-col gap-1">
@@ -1357,8 +1358,7 @@ export default function MgRegular() {
                 }`}
               >
                 <option value="">Select Course</option>
-                <option value="XII">XII</option>
-                <option value="ITI">ITI</option>
+                <option value="X">X</option>
               </select>
             </div>
 
@@ -1429,11 +1429,10 @@ export default function MgRegular() {
                 }`}
               >
                 <option value="">Select Board</option>
-                <option value="HSE">HSE</option>
-                <option value="Directorate General of Training (DGT)">
-                  Directorate General of Training (DGT)
-                </option>
+                <option value="SSLC">SSLC</option>
                 <option value="CBSE">CBSE</option>
+                <option value="ICSE">ICSE</option>
+                <option value="Other">Other</option>
               </select>
             </div>
 

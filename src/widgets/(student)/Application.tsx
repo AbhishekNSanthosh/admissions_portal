@@ -90,7 +90,7 @@ export default function Application() {
             onClick={handleCreateNew}
             className="text-xl text-green-500 flex md:hidden px-4 py-2"
           >
-           <MdOutlineAddCircleOutline className="text-4xl"/>
+            <MdOutlineAddCircleOutline className="text-4xl" />
           </button>
         </div>
       </div>
@@ -99,10 +99,12 @@ export default function Application() {
         <p>No applications found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {applications.map((app,index) => (
+          {applications.map((app, index) => (
             <div
               // href={"/dashboard/application/" + app.id}
-             key={`${app?.id ?? "no-id"}-${index}-${app?.firstName ?? "no-name"}`}
+              key={`${app?.id ?? "no-id"}-${index}-${
+                app?.firstName ?? "no-name"
+              }`}
               className="p-4 bg-white border rounded shadow-sm"
             >
               {/* <div className="">
@@ -129,7 +131,8 @@ export default function Application() {
                   <FaRegEye className="text-[19px]" />
                   View
                 </button> */}
-                <Link href={`/dashboard/application/download/${app?.appId}`}
+                <Link
+                  href={`/dashboard/application/download/${app?.appId}`}
                   className="bg-primary-50 text-primary-700 font-semibold flex items-center justify-center gap-2 px-3 py-1 rounded hover:bg-gray-800 text-sm"
                   // onClick={() => {
                   //   router.push("/dashboard/application/download/" + app?.id);
@@ -157,22 +160,24 @@ export default function Application() {
                 >
                   Management Quota - Lateral Entry
                 </Link>
-                <button
-                  onClick={() =>
-                    handleOptionSelect("Management Quota - Regular")
-                  }
+                <Link
+                  href={"/dashboard/application/management/merit-lateral-entry"}
+                  className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
+                >
+                  Management Merit - Lateral Entry
+                </Link>
+                <Link
+                  href={"/dashboard/application/management/regular"}
                   className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                 >
                   Management Quota - Regular
-                </button>
-                <button
-                  onClick={() =>
-                    handleOptionSelect("Management Merit - Regular")
-                  }
+                </Link>
+                <Link
+                  href={"/dashboard/application/management/merit-regular"}
                   className="px-4 py-3 bg-primary-600 text-white rounded hover:bg-blue-700"
                 >
                   Management Merit - Regular
-                </button>
+                </Link>
               </div>
               <button
                 onClick={() => setShowModal(false)}
