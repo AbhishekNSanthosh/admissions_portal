@@ -2178,7 +2178,7 @@ export default function MgRegular() {
           <div className="flex flex-col gap-1">
             <h6 className="font-semibold">Fee Payment</h6>
             <span className="text-gray-700 text-sm">
-              Application fee: ₹200 (Non-refundable)
+              Application fee: ₹500 (Non-refundable)
             </span>
           </div>
 
@@ -2188,7 +2188,7 @@ export default function MgRegular() {
               <div className="flex flex-col gap-3">
                 <h6 className="font-medium text-gray-800">Pay via UPI ID</h6>
 
-                <div className="flex items-center gap-2 bg-gray-50 p-3 rounded-md">
+                {/* <div className="flex items-center gap-2 bg-gray-50 p-3 rounded-md">
                   <div className="bg-blue-100 p-2 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -2207,7 +2207,7 @@ export default function MgRegular() {
                     <p className="text-sm text-gray-500">Our UPI ID</p>
                     <p className="font-semibold">CARMELPOLY@FBL</p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mt-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
