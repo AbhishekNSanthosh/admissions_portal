@@ -20,4 +20,4 @@ const auth = getAuth(app);
 const db = getFirestore(app, "gs://poly-admission");
 
 export const storage = getStorage(app);
-export { app, auth, db }; 
+export { app, auth,db }; 
