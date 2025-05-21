@@ -38,6 +38,7 @@ export default function MeritRegular() {
   const [newSubject, setNewSubject] = useState("");
   const [certificateUrl, setCertificateUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
   const [finished, setFinished] = useState(false);
   const [hasDoneGovtQuotaApplications, setHasDoneGovtQuotaApplications] =
     useState(false);
@@ -397,7 +398,7 @@ export default function MeritRegular() {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     // e.preventDefault();
-
+setSubmitting(true);
     try {
       const customId = await generateCustomId();
 
@@ -437,6 +438,8 @@ export default function MeritRegular() {
         type: "error",
         desc: "Please try again",
       });
+    }finally{
+      setSubmitting(false);
     }
   };
 
@@ -2170,7 +2173,7 @@ export default function MeritRegular() {
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Our UPI ID</p>
-                    <p className="font-semibold">college.fees@upi</p>
+                    <p className="font-semibold">CARMELPOLY@FBL</p>
                   </div>
                 </div>
 
@@ -2188,7 +2191,7 @@ export default function MeritRegular() {
                   className="mt-2 bg-primary-600 text-white py-2 px-4 rounded-md text-sm font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   onClick={() => {
                     // Construct the UPI payment link
-                    const upiId = "college.fees@upi"; // Replace with your actual UPI ID
+                    const upiId = "CARMELPOLY@FBL"; // Replace with your actual UPI ID
                     const amount = "200";
                     const name = "College Name"; // Replace with your institution name
                     const transactionNote = "Admission Fee"; // Payment purpose
@@ -2362,11 +2365,14 @@ export default function MeritRegular() {
           >
             Save as draft
           </button> */}
-          <button
-            className="flex-1 bg-primary-600 py-3 rounded-[10px] text-white font-semibold"
+                    <button
+            disabled={submitting}
+            className={`flex-1  py-3 rounded-[10px] text-white font-semibold ${
+              submitting ? "bg-primary-200" : "bg-primary-600"
+            }`}
             type="submit"
           >
-            Submit
+            {submitting ? "Please wait" : "Submit"}
           </button>
         </div>
       </form>

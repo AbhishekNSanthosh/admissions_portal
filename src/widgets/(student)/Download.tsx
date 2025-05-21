@@ -411,7 +411,7 @@ const ApplicationPDFDocument = ({
           }}
         >
           <Text>
-            <Text style={styles.boldText}>Transaction Id</Text>{" "}
+            <Text style={styles.boldText}>Transaction Id: </Text>{" "}
             {application?.transactionId || "Nill"}
           </Text>
         </View>

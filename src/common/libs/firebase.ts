@@ -17,7 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
-const db = getFirestore(app, "gs://poly-admission");
+const db = getFirestore(app);
 
-export const storage = getStorage(app);
+export const storage = getStorage(app, "gs://poly-admission");
 export { app, auth,db }; 
