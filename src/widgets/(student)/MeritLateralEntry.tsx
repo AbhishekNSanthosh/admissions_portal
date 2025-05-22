@@ -1535,14 +1535,25 @@ export default function MeritLateralEntry() {
                         </button>
                       </div>
                       <input
-                        onChange={(e) =>
-                          handleMarkChange(subject, e.target.value)
-                        }
-                        value={mark}
-                        type="text"
-                        placeholder="Enter marks"
-                        className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300`}
-                      />
+                          onChange={(e) => {
+                            const value = Math.min(Number(e.target.value), 999); // Ensures value doesn't exceed 99
+                            if (!isNaN(value)) {
+                              handleMarkChange(subject, value.toString());
+                            }
+                          }}
+                          value={mark}
+                          type="number"
+                          min="0"
+                          max="999"
+                          onKeyDown={(e) => {
+                            // Prevent arrow keys from changing the value
+                            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                              e.preventDefault();
+                            }
+                          }}
+                          placeholder="Enter marks (e.g., 100)"
+                          className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 appearance-none`}
+                        />
                     </div>
                   ))}
                 </div>
