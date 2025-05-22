@@ -39,6 +39,7 @@ export interface Application {
     category: string;
     govtQuotaApplicationNo: string,
     title: string;
+    totalofMaxMarks?:string;
     preferenceOne: string;
     generatedId?: string;
     preferenceTwo: string;

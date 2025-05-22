@@ -28,7 +28,6 @@ import easyToast from "@components/CustomToast";
 import Image from "next/image";
 import { uploadBytesResumable } from "firebase/storage";
 
-
 export default function MeritRegular() {
   const [user, setUser] = useState<any>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -42,7 +41,7 @@ export default function MeritRegular() {
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [finished, setFinished] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [hasDoneGovtQuotaApplications, setHasDoneGovtQuotaApplications] =
     useState(false);
   const [errorState, setErrorState] = useState<ErrorState>({
@@ -103,7 +102,7 @@ export default function MeritRegular() {
     preferenceTwo: "",
     preferenceThree: "",
     preferenceFour: "",
-      fee:"200",
+    fee: "200",
     preferenceFive: "",
     preferenceSix: "",
     firstName: "",
@@ -1543,8 +1542,8 @@ export default function MeritRegular() {
                         }
                         value={mark}
                         type="text"
-                        placeholder="Enter marks"
-                        className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300`}
+                        placeholder="Enter grade"
+                        className={`rounded-md uppercase px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300`}
                       />
                     </div>
                   ))}
@@ -1577,41 +1576,50 @@ export default function MeritRegular() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col mt-3">
-            <label
-              className={`text-sm mb-1 font-medium ${
-                errorState?.passedOn ? "text-red-500" : "text-gray-800"
-              }`}
-            >
-              Chances Taken <span className="text-red-500">*</span>
-            </label>
-            <input
-              required
-              onChange={(e) => {
-                setApplication((prevStat) => ({
-                  ...prevStat,
-                  chancesTaken: e.target.value,
-                }));
-                if (application?.passedOn !== "") {
-                  setErrorState((prev) => ({
-                    ...prev,
-                    passedOn: false,
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+            <div className="flex flex-col mt-3">
+              <label
+                className={`text-sm mb-1 font-medium ${
+                  errorState?.passedOn ? "text-red-500" : "text-gray-800"
+                }`}
+              >
+                Chances Taken <span className="text-red-500">*</span>
+              </label>
+              <input
+                required
+                onChange={(e) => {
+                  setApplication((prevStat) => ({
+                    ...prevStat,
+                    chancesTaken: e.target.value,
                   }));
-                  setErrorState((prev) => ({
-                    ...prev,
-                    passedOn: false,
-                  }));
-                }
-              }}
-              value={application.chancesTaken}
-              type="text"
-              placeholder="Eg: 1"
-              className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                errorState?.passedOn
-                  ? "border-2 border-red-500"
-                  : "border border-gray-300"
-              }`}
-            />
+                  if (application?.passedOn !== "") {
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                  }
+                }}
+                value={application.chancesTaken}
+                type="text"
+                placeholder="Eg: 1"
+                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  errorState?.passedOn
+                    ? "border-2 border-red-500"
+                    : "border border-gray-300"
+                }`}
+              />
+            </div>
+          </div>
+          <div className="">
+            <span className="italic text-xs mt-1">
+              Note:Please add the subject and enter the marks. Make sure all
+              subjects are included; missing any subject may lead to a reduction
+              in the index score.
+            </span>
           </div>
         </div>
 
@@ -2279,6 +2287,7 @@ export default function MeritRegular() {
 
                 <div className="flex gap-2 mt-2">
                   <button
+                    type="button"
                     className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
                     onClick={downloadQRCode}
                   >

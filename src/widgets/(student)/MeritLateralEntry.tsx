@@ -110,6 +110,7 @@ export default function MeritLateralEntry() {
     govtQuotaApplicationNo: "",
     transactionId: "",
     chancesTaken: "",
+    totalofMaxMarks: "",
     email: "",
     placeOfBirth: "",
     gender: "",
@@ -1573,41 +1574,87 @@ export default function MeritLateralEntry() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col mt-3">
-            <label
-              className={`text-sm mb-1 font-medium ${
-                errorState?.passedOn ? "text-red-500" : "text-gray-800"
-              }`}
-            >
-              Chances Taken <span className="text-red-500">*</span>
-            </label>
-            <input
-              required
-              onChange={(e) => {
-                setApplication((prevStat) => ({
-                  ...prevStat,
-                  chancesTaken: e.target.value,
-                }));
-                if (application?.passedOn !== "") {
-                  setErrorState((prev) => ({
-                    ...prev,
-                    passedOn: false,
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+            <div className="flex flex-col mt-3">
+              <label
+                className={`text-sm mb-1 font-medium ${
+                  errorState?.passedOn ? "text-red-500" : "text-gray-800"
+                }`}
+              >
+                Overall Maximum Marks (Out of){" "}
+                <span className="text-red-500">*</span>
+              </label>
+              <input
+                required
+                onChange={(e) => {
+                  setApplication((prevStat) => ({
+                    ...prevStat,
+                    totalofMaxMarks: e.target.value,
                   }));
-                  setErrorState((prev) => ({
-                    ...prev,
-                    passedOn: false,
+                  if (application?.passedOn !== "") {
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                  }
+                }}
+                value={application.totalofMaxMarks}
+                type="text"
+                placeholder="Eg: 600"
+                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  errorState?.passedOn
+                    ? "border-2 border-red-500"
+                    : "border border-gray-300"
+                }`}
+              />
+            </div>
+            <div className="flex flex-col mt-3">
+              <label
+                className={`text-sm mb-1 font-medium ${
+                  errorState?.passedOn ? "text-red-500" : "text-gray-800"
+                }`}
+              >
+                Chances Taken <span className="text-red-500">*</span>
+              </label>
+              <input
+                required
+                onChange={(e) => {
+                  setApplication((prevStat) => ({
+                    ...prevStat,
+                    chancesTaken: e.target.value,
                   }));
-                }
-              }}
-              value={application.chancesTaken}
-              type="text"
-              placeholder="Eg: 1"
-              className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                errorState?.passedOn
-                  ? "border-2 border-red-500"
-                  : "border border-gray-300"
-              }`}
-            />
+                  if (application?.passedOn !== "") {
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                    setErrorState((prev) => ({
+                      ...prev,
+                      passedOn: false,
+                    }));
+                  }
+                }}
+                value={application.chancesTaken}
+                type="text"
+                placeholder="Eg: 1"
+                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                  errorState?.passedOn
+                    ? "border-2 border-red-500"
+                    : "border border-gray-300"
+                }`}
+              />
+            </div>
+          </div>
+          <div className="">
+            <span className="italic text-xs mt-1">
+              Note:Please add the subject and enter the marks. Make sure all
+              subjects are included; missing any subject may lead to a reduction
+              in the index score.
+            </span>
           </div>
         </div>
 
@@ -2275,6 +2322,7 @@ export default function MeritLateralEntry() {
 
                 <div className="flex gap-2 mt-2">
                   <button
+                    type="button"
                     className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
                     onClick={downloadQRCode}
                   >
