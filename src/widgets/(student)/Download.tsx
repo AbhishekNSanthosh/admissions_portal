@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     borderRightColor: "#999",
     flex: 1,
     fontSize: 9,
+   textTransform: "capitalize",
   },
   lastCell: {
     borderRightWidth: 0,
@@ -215,7 +216,7 @@ const ApplicationPDFDocument = ({
               flexDirection: "row",
               justifyContent: "space-between",
               fontSize: 9,
-              marginTop:5
+              marginTop: 5,
             }}
           >
             <Text>
@@ -352,7 +353,9 @@ const ApplicationPDFDocument = ({
                 <Text style={[styles.tableCell, { flex: 0.3 }]}>
                   {index + 1}
                 </Text>
-                <Text style={[styles.tableCell, { flex: 2 }]}>{subject}</Text>
+                <Text style={[styles.tableCell, { flex: 2 }]}>
+                  {subject.replace(/([A-Z])/g, " $1").trim()}
+                </Text>
                 <Text
                   style={[styles.tableCell, styles.lastCell, { flex: 0.4 }]}
                 >
@@ -368,7 +371,7 @@ const ApplicationPDFDocument = ({
               flexDirection: "row",
               justifyContent: "space-between",
               marginBottom: 0,
-              marginTop:5
+              marginTop: 5,
             }}
           >
             <Text style={styles.boldText}>

@@ -38,7 +38,8 @@ export const subjectOptions = [
     "Sanskrit",
     "French",
     "German",
-    "Arabic"
+    "Arabic",
+    "Other"
 ];
 
 
@@ -83,3 +84,48 @@ export const gradeOptions = [
     "D1",
     "D2",
 ];
+
+// subjects.js (or any file you want)
+// subjects.js
+export const optns = [
+    // Plus Two Science subjects
+    "Physics",
+    "Chemistry",
+    "Mathematics",
+    "Biology",
+    "Malayalam",
+    "Computer Science",
+    "Electronics",
+    "Information Technology",
+    "Engineering Graphics",
+    "Biotechnology",
+    "Technical Vocational Subject",
+
+    // Plus Two Commerce/Other common subjects
+    "Business Studies",
+    "Entrepreneurship",
+    "Economics",
+    "Accountancy",
+    "Physical Education",
+    "English",
+    "Hindi",
+
+    // ITI typical subjects (basic/common)
+    "Fitter",
+    "Electrician",
+    "Mechanic",
+    "Welder",
+    "Plumber",
+    "Carpenter",
+    "Automobile",
+    "Machinist",
+    "Computer Operator and Programming Assistant (COPA)",
+    "Draftsman Civil",
+    "Draftsman Mechanical",
+    "Tool and Die Maker",
+    "Information Technology and Electronics System Maintenance",
+
+    "Agriculture",
+    "Other",
+];
+

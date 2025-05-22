@@ -27,6 +27,7 @@ import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
 import { uploadBytesResumable } from "firebase/storage";
+import { optns } from "@utils/constants";
 
 export default function MeritLateralEntry() {
   const [user, setUser] = useState<any>(null);
@@ -1535,33 +1536,32 @@ export default function MeritLateralEntry() {
                         </button>
                       </div>
                       <input
-                          onChange={(e) => {
-                            const value = Math.min(Number(e.target.value), 999); // Ensures value doesn't exceed 99
-                            if (!isNaN(value)) {
-                              handleMarkChange(subject, value.toString());
-                            }
-                          }}
-                          value={mark}
-                          type="number"
-                          min="0"
-                          max="999"
-                          onKeyDown={(e) => {
-                            // Prevent arrow keys from changing the value
-                            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                              e.preventDefault();
-                            }
-                          }}
-                          placeholder="Enter marks (e.g., 100)"
-                          className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 appearance-none`}
-                        />
+                        onChange={(e) => {
+                          const value = Math.min(Number(e.target.value), 999); // Ensures value doesn't exceed 99
+                          if (!isNaN(value)) {
+                            handleMarkChange(subject, value.toString());
+                          }
+                        }}
+                        value={mark}
+                        type="number"
+                        min="0"
+                        max="999"
+                        onKeyDown={(e) => {
+                          // Prevent arrow keys from changing the value
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
+                        placeholder="Enter marks (e.g., 100)"
+                        className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 appearance-none`}
+                      />
                     </div>
                   ))}
                 </div>
 
                 {/* Add new subject field */}
                 <div className="flex items-center gap-2">
-                  <input
-                    type="text"
+                  <select
                     value={newSubject}
                     onChange={(e) => {
                       setNewSubject(e.target.value);
@@ -1570,10 +1570,18 @@ export default function MeritLateralEntry() {
                         marks: false,
                       }));
                     }}
-                    onKeyDown={(e) => e.key === "Enter" && addSubject()}
-                    placeholder="Enter subject name"
                     className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
-                  />
+                  >
+                    <option value="" disabled>
+                      Select subject
+                    </option>
+                    {optns?.map((subject) => (
+                      <option key={subject} value={subject}>
+                        {subject}
+                      </option>
+                    ))}
+                  </select>
+
                   <button
                     type="button"
                     onClick={addSubject}

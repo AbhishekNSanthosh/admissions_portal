@@ -29,6 +29,7 @@ import {
 import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
+import { optns } from "@utils/constants";
 
 export default function LateralEntry() {
   const [user, setUser] = useState<any>(null);
@@ -1543,34 +1544,33 @@ export default function LateralEntry() {
                           Remove
                         </button>
                       </div>
-                        <input
-                          onChange={(e) => {
-                            const value = Math.min(Number(e.target.value), 999); // Ensures value doesn't exceed 99
-                            if (!isNaN(value)) {
-                              handleMarkChange(subject, value.toString());
-                            }
-                          }}
-                          value={mark}
-                          type="number"
-                          min="0"
-                          max="999"
-                          onKeyDown={(e) => {
-                            // Prevent arrow keys from changing the value
-                            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-                              e.preventDefault();
-                            }
-                          }}
-                          placeholder="Enter marks"
-                          className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 appearance-none`}
-                        />
+                      <input
+                        onChange={(e) => {
+                          const value = Math.min(Number(e.target.value), 999); // Ensures value doesn't exceed 99
+                          if (!isNaN(value)) {
+                            handleMarkChange(subject, value.toString());
+                          }
+                        }}
+                        value={mark}
+                        type="number"
+                        min="0"
+                        max="999"
+                        onKeyDown={(e) => {
+                          // Prevent arrow keys from changing the value
+                          if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+                            e.preventDefault();
+                          }
+                        }}
+                        placeholder="Enter marks"
+                        className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 appearance-none`}
+                      />
                     </div>
                   ))}
                 </div>
 
                 {/* Add new subject field */}
                 <div className="flex items-center gap-2">
-                  <input
-                    type="text"
+                  <select
                     value={newSubject}
                     onChange={(e) => {
                       setNewSubject(e.target.value);
@@ -1579,10 +1579,18 @@ export default function LateralEntry() {
                         marks: false,
                       }));
                     }}
-                    onKeyDown={(e) => e.key === "Enter" && addSubject()}
-                    placeholder="Enter subject name"
                     className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
-                  />
+                  >
+                    <option value="" disabled>
+                      Select subject
+                    </option>
+                    {optns?.map((subject) => (
+                      <option key={subject} value={subject}>
+                        {subject}
+                      </option>
+                    ))}
+                  </select>
+
                   <button
                     type="button"
                     onClick={addSubject}
@@ -1601,7 +1609,8 @@ export default function LateralEntry() {
                   errorState?.passedOn ? "text-red-500" : "text-gray-800"
                 }`}
               >
-                Overall Maximum Marks (Out of) <span className="text-red-500">*</span>
+                Overall Maximum Marks (Out of){" "}
+                <span className="text-red-500">*</span>
               </label>
               <input
                 required
@@ -1669,7 +1678,11 @@ export default function LateralEntry() {
             </div>
           </div>
           <div className="mt-1">
-            <span className="italic text-xs">Note:Please add the subject and enter the marks. Make sure all subjects are included; missing any subject may lead to a reduction in the index score.</span>
+            <span className="italic text-xs">
+              Note:Please add the subject and enter the marks. Make sure all
+              subjects are included; missing any subject may lead to a reduction
+              in the index score.
+            </span>
           </div>
         </div>
 
@@ -2337,7 +2350,7 @@ export default function LateralEntry() {
 
                 <div className="flex gap-2 mt-2">
                   <button
-                  type="button"
+                    type="button"
                     className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
                     onClick={downloadQRCode}
                   >
