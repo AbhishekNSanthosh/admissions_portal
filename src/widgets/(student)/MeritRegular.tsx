@@ -97,7 +97,7 @@ export default function MeritRegular() {
   const [application, setApplication] = useState<Application>({
     id: "",
     generatedId: "",
-    category: "lateral_entry",
+    category: "management_merit_regular",
     title: "Management Merit - Regular",
     preferenceOne: "",
     preferenceTwo: "",

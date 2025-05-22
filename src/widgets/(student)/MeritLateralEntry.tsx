@@ -96,8 +96,8 @@ export default function MeritLateralEntry() {
   const [application, setApplication] = useState<Application>({
     id: "",
     generatedId: "",
-    category: "lateral_entry",
-    title: "Management Quota - Lateral Entry",
+    category: "management_merit_lateral_entry",
+    title: "Management Merit - Lateral Entry",
     preferenceOne: "",
     preferenceTwo: "",
     preferenceThree: "",
@@ -119,7 +119,7 @@ export default function MeritLateralEntry() {
     addressLine1: "",
     addressLine2: "",
     street: "",
-      fee:"200",
+    fee: "200",
     district: "",
     pinCode: "",
     contactNo: "",
@@ -2187,7 +2187,7 @@ export default function MeritLateralEntry() {
               <div className="flex flex-col gap-3">
                 <h6 className="font-medium text-gray-800">Pay via UPI ID</h6>
 
-                 <div className="flex items-center gap-2 bg-gray-50 p-3 rounded-md">
+                <div className="flex items-center gap-2 bg-gray-50 p-3 rounded-md">
                   <div className="bg-blue-100 p-2 rounded-full">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -2206,7 +2206,7 @@ export default function MeritLateralEntry() {
                     <p className="text-sm text-gray-500">Our UPI ID</p>
                     <p className="font-semibold">CARMELPOLY@FBL</p>
                   </div>
-                </div> 
+                </div>
 
                 <div className="mt-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -2335,7 +2335,7 @@ export default function MeritLateralEntry() {
             <h6 className="text-sm font-medium text-gray-800 mb-2">
               Payment Instructions
             </h6>
-          <ul className="text-xs text-gray-600 list-disc pl-5 space-y-1">
+            <ul className="text-xs text-gray-600 list-disc pl-5 space-y-1">
               {/* <li>Fixed application fee: ₹200 (non-refundable)</li> */}
               <li>Make payment using either UPI ID or QR code</li>
               <li>After payment, enter the transaction ID above</li>

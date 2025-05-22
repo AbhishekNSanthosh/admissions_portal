@@ -96,8 +96,8 @@ export default function MgRegular() {
   const [application, setApplication] = useState<Application>({
     id: "",
     generatedId: "",
-    category: "lateral_entry",
-    title: "Management Merit - Regular",
+    category: "management_quota_regular",
+    title: "Management Quota - Regular",
     preferenceOne: "",
     preferenceTwo: "",
     preferenceThree: "",

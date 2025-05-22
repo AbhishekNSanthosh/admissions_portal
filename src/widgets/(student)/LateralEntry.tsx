@@ -98,7 +98,7 @@ export default function LateralEntry() {
   const [application, setApplication] = useState<Application>({
     id: "",
     generatedId: "",
-    category: "lateral_entry",
+    category: "management_quota_lateral_entry",
     title: "Management Quota - Lateral Entry",
     preferenceOne: "",
     fee: "500",
