@@ -14,6 +14,7 @@ export interface Guardian {
     [key: string]: string;
 }
 
+export interface Marks {
 // english: string;
 // language: string;
 // hindi: string,
@@ -29,7 +30,6 @@ export interface Guardian {
 // informationTechnology: string,
 // communicativeEnglish: string,
 
-export interface Marks {
     [key: string]: string;
 }
 
