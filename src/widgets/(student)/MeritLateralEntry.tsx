@@ -1561,7 +1561,8 @@ export default function MeritLateralEntry() {
 
                 {/* Add new subject field */}
                 <div className="flex items-center gap-2">
-                  <select
+                  <input
+                    type="text"
                     value={newSubject}
                     onChange={(e) => {
                       setNewSubject(e.target.value);
@@ -1570,18 +1571,10 @@ export default function MeritLateralEntry() {
                         marks: false,
                       }));
                     }}
+                    onKeyDown={(e) => e.key === "Enter" && addSubject()}
+                    placeholder="Enter subject name"
                     className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
-                  >
-                    <option value="" disabled>
-                      Select subject
-                    </option>
-                    {optns?.map((subject) => (
-                      <option key={subject} value={subject}>
-                        {subject}
-                      </option>
-                    ))}
-                  </select>
-
+                  />
                   <button
                     type="button"
                     onClick={addSubject}
