@@ -207,30 +207,31 @@ const ApplicationPDFDocument = ({
             {application?.preferenceThree || "Nill"}
           </Text>
         </View>
-        {application?.preferenceFour ||
+        {(application?.preferenceFour ||
           application?.preferenceFive ||
-          (application?.preferenceFive && (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                fontSize: 9,
-              }}
-            >
-              <Text>
-                <Text style={styles.boldText}>Preference 4:</Text>{" "}
-                {application?.preferenceFour || "Nill"}
-              </Text>
-              <Text>
-                <Text style={styles.boldText}>Preference 5:</Text>{" "}
-                {application?.preferenceFive || "Nill"}
-              </Text>
-              <Text>
-                <Text style={styles.boldText}>Preference 6:</Text>{" "}
-                {application?.preferenceSix || "Nill"}
-              </Text>
-            </View>
-          ))}
+          application?.preferenceSix) && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              fontSize: 9,
+              marginTop:5
+            }}
+          >
+            <Text>
+              <Text style={styles.boldText}>Preference 4:</Text>{" "}
+              {application?.preferenceFour || "Nill"}
+            </Text>
+            <Text>
+              <Text style={styles.boldText}>Preference 5:</Text>{" "}
+              {application?.preferenceFive || "Nill"}
+            </Text>
+            <Text>
+              <Text style={styles.boldText}>Preference 6:</Text>{" "}
+              {application?.preferenceSix || "Nill"}
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Candidate Profile */}
@@ -313,7 +314,7 @@ const ApplicationPDFDocument = ({
               {application?.universityOrBoard}
             </Text>
             <Text style={[styles.tableCell, styles.lastCell, { flex: 0.6 }]}>
-              2022
+              {application?.passedOn}
             </Text>
           </View>
         </View>
@@ -341,7 +342,7 @@ const ApplicationPDFDocument = ({
             <Text style={[styles.tableCell, { flex: 0.3 }]}>No.</Text>
             <Text style={[styles.tableCell, { flex: 2 }]}>Subject</Text>
             <Text style={[styles.tableCell, styles.lastCell, { flex: 0.4 }]}>
-              Grade
+              Marks/Grade
             </Text>
           </View>
           {/* Table Rows */}
@@ -361,6 +362,20 @@ const ApplicationPDFDocument = ({
             )
           )}
         </View>
+        {application?.totalofMaxMarks && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: 0,
+              marginTop:5
+            }}
+          >
+            <Text style={styles.boldText}>
+              Overall Maximum Marks (Out of) : {application?.totalofMaxMarks}
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Guardian Info */}
@@ -432,7 +447,7 @@ const ApplicationPDFDocument = ({
           {/* Table Rows */}
           {[
             "I have filled-in the correct information.",
-            "I have uploaded the copy of statement of marks card of class X.",
+            `I have uploaded the copy of statement of marks card of class ${application?.course}`,
             "My parent/guardian and I have signed the declaration on the printed application form.",
             "I am attaching the copy of application processing fee challan.",
           ].map((item, index) => (

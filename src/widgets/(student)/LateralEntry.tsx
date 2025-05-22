@@ -1503,7 +1503,7 @@ export default function LateralEntry() {
                 value={application.passedOn}
                 type="text"
                 placeholder="Eg: MAR-2025"
-                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                className={`rounded-md uppercase px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
                   errorState?.passedOn
                     ? "border-2 border-red-500"
                     : "border border-gray-300"
@@ -1570,7 +1570,7 @@ export default function LateralEntry() {
                     }}
                     onKeyDown={(e) => e.key === "Enter" && addSubject()}
                     placeholder="Enter subject name"
-                    className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
+                    className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
                   />
                   <button
                     type="button"
