@@ -27,6 +27,12 @@ import { FaEye, FaTrashAlt } from "react-icons/fa";
 import easyToast from "@components/CustomToast";
 import Image from "next/image";
 import { uploadBytesResumable } from "firebase/storage";
+import {
+  gradeOptions,
+  sslcGradeOptions,
+  sslcSubjects,
+  subjectOptions,
+} from "@utils/constants";
 
 export default function MeritRegular() {
   const [user, setUser] = useState<any>(null);
@@ -38,6 +44,7 @@ export default function MeritRegular() {
   const [selectedBoard, setSelectedBoard] = useState("");
   const [newSubject, setNewSubject] = useState("");
   const [certificateUrl, setCertificateUrl] = useState("");
+  const [isSSLC, setIsSSLC] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [finished, setFinished] = useState(false);
@@ -130,22 +137,23 @@ export default function MeritRegular() {
     universityOrBoard: "",
     certificateUrl: "",
     passedOn: "",
-    marks: {},
-    // english: "",
-    // hindi: "",
-    // physics: "",
-    // science: "",
-    // language: "",
-    // chemistry: "",
-    // computerScience: "",
-    // mathematics: "",
-    // firstLanguagePaperOne: "",
-    // firstLanguagePaperTwo: "",
-    // socialScience: "",
-    // biology: "",
-    // informationTechnology: "",
-    // communicativeEnglish: "",
-    // },
+    marks: {
+      // english: "",
+      // hindi: "",
+      // physics: "",
+      // science: "",
+      // language: "",
+      // chemistry: "",
+      // computerScience: "",
+      // mathematics: "",
+      // firstLanguagePaperOne: "",
+      // firstLanguagePaperTwo: "",
+      // socialScience: "",
+      // biology: "",
+      // informationTechnology: "",
+      // communicativeEnglish: "",
+      // },
+    },
     guardian: {
       name: "",
       occupation: "",
@@ -1444,6 +1452,11 @@ export default function MeritRegular() {
                     ...prevStat,
                     universityOrBoard: e.target.value,
                   }));
+                  if (e.target.value === "SSLC") {
+                    setIsSSLC(true);
+                  } else {
+                    setIsSSLC(false);
+                  }
                   if (application?.universityOrBoard !== "") {
                     setErrorState((prev) => ({
                       ...prev,
@@ -1506,132 +1519,271 @@ export default function MeritRegular() {
           </div>
         </div>
 
-        <div
-          className={`bg-white w-full h-auto py-5 px-4 rounded-[5px] flex flex-col ${
-            errorState?.marks && "border-2 border-red-500"
-          }`}
-        >
-          <div className="flex flex-col gap-1">
-            <h6 className="font-semibold">Qualifying Examination</h6>
-            <span className="text-gray-700 text-sm">
-              Enter the marks or grade obtained in your qualifying examination.
-            </span>
-          </div>
-          <div className="">
-            <div className="flex flex-col">
-              <div className="grid grid-cols-1 gap-4">
-                {/* Display existing subject fields in a 3-column grid on larger screens */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
-                  {Object.entries(application.marks).map(([subject, mark]) => (
-                    <div key={subject} className="flex flex-col">
-                      <div className="flex items-center gap-2">
-                        <label className="text-gray-800 text-sm mb-1 font-medium capitalize">
-                          {subject.replace(/([A-Z])/g, " $1").trim()}
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() => removeSubject(subject)}
-                          className="text-red-500 text-xs"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                      <input
-                        onChange={(e) => {
-                          let value = e.target.value.toUpperCase();
-                          
-                          // Allow only 1 letter followed by 1 number (e.g., A1, B2)
-                          if (/^[A-Z]?[0-9]?$/.test(value)) {
-                            // If first character is a number, ignore it
-                            if (/^[0-9]/.test(value)) {
-                              value = ""; // or keep only the number if you prefer
+        {!isSSLC && (
+          <div
+            className={`bg-white w-full h-auto py-5 px-4 rounded-[5px] flex flex-col ${
+              errorState?.marks && "border-2 border-red-500"
+            }`}
+          >
+            <div className="flex flex-col gap-1">
+              <h6 className="font-semibold">Qualifying Examination</h6>
+              <span className="text-gray-700 text-sm">
+                Enter the marks or grade obtained in your qualifying
+                examination.
+              </span>
+            </div>
+            <div className="">
+              <div className="flex flex-col">
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Display existing subject fields in a 3-column grid on larger screens */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+                    {Object.entries(application.marks)
+                      .filter(([subject]) =>
+                        application?.universityOrBoard === "SSLC"
+                          ? sslcSubjects.includes(subject)
+                          : true
+                      )
+                      .map(([subject, mark]) => (
+                        <div key={subject} className="flex flex-col">
+                          <div className="flex items-center gap-2">
+                            <label className="text-gray-800 text-sm mb-1 font-medium capitalize">
+                              {subject.replace(/([A-Z])/g, " $1").trim()}
+                              <span className="text-red-500">*</span>
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => removeSubject(subject)}
+                              className="text-red-500 text-xs"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <select
+                            onChange={(e) =>
+                              handleMarkChange(subject, e.target.value)
                             }
-                            handleMarkChange(subject, value);
-                          }
-                        }}
-                        value={mark}
-                        type="text"
-                        placeholder="Enter grade (e.g., A1, B2)"
-                        className={`rounded-md uppercase px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300`}
-                        maxLength={2}
-                      />
-                    </div>
-                  ))}
-                </div>
+                            value={application.marks?.[subject] || ""}
+                            className="rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 bg-white"
+                          >
+                            <option value="" disabled>
+                              Select grade
+                            </option>
+                            {gradeOptions.map((grade) => (
+                              <option key={grade} value={grade}>
+                                {grade}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                  </div>
 
-                {/* Add new subject field */}
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={newSubject}
-                    onChange={(e) => {
-                      setNewSubject(e.target.value);
-                      setErrorState((prev) => ({
-                        ...prev,
-                        marks: false,
-                      }));
-                    }}
-                    onKeyDown={(e) => e.key === "Enter" && addSubject()}
-                    placeholder="Enter subject name"
-                    className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
-                  />
-                  <button
-                    type="button"
-                    onClick={addSubject}
-                    className="bg-primary-500 text-white px-3 py-2 rounded-md text-sm hover:bg-primary-600"
-                  >
-                    Add Subject
-                  </button>
+                  {/* Add new subject field */}
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={newSubject}
+                      onChange={(e) => {
+                        setNewSubject(e.target.value);
+                        setErrorState((prev) => ({
+                          ...prev,
+                          marks: false,
+                        }));
+                      }}
+                      className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1 bg-white"
+                    >
+                      <option value="">Select subject</option>
+                      {subjectOptions.map((subject) => (
+                        <option key={subject} value={subject}>
+                          {subject}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={addSubject}
+                      disabled={!newSubject}
+                      className={`${
+                        newSubject
+                          ? "bg-primary-500 hover:bg-primary-600"
+                          : "bg-gray-300 cursor-not-allowed"
+                      } text-white px-3 py-2 rounded-md text-sm`}
+                    >
+                      Add Subject
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
-            <div className="flex flex-col mt-3">
-              <label
-                className={`text-sm mb-1 font-medium ${
-                  errorState?.passedOn ? "text-red-500" : "text-gray-800"
-                }`}
-              >
-                Chances Taken <span className="text-red-500">*</span>
-              </label>
-              <input
-                required
-                onChange={(e) => {
-                  setApplication((prevStat) => ({
-                    ...prevStat,
-                    chancesTaken: e.target.value,
-                  }));
-                  if (application?.passedOn !== "") {
-                    setErrorState((prev) => ({
-                      ...prev,
-                      passedOn: false,
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+              <div className="flex flex-col mt-3">
+                <label
+                  className={`text-sm mb-1 font-medium ${
+                    errorState?.passedOn ? "text-red-500" : "text-gray-800"
+                  }`}
+                >
+                  Chances Taken <span className="text-red-500">*</span>
+                </label>
+                <input
+                  required
+                  onChange={(e) => {
+                    setApplication((prevStat) => ({
+                      ...prevStat,
+                      chancesTaken: e.target.value,
                     }));
-                    setErrorState((prev) => ({
-                      ...prev,
-                      passedOn: false,
-                    }));
-                  }
-                }}
-                value={application.chancesTaken}
-                type="text"
-                placeholder="Eg: 1"
-                className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  errorState?.passedOn
-                    ? "border-2 border-red-500"
-                    : "border border-gray-300"
-                }`}
-              />
+                    if (application?.passedOn !== "") {
+                      setErrorState((prev) => ({
+                        ...prev,
+                        passedOn: false,
+                      }));
+                      setErrorState((prev) => ({
+                        ...prev,
+                        passedOn: false,
+                      }));
+                    }
+                  }}
+                  value={application.chancesTaken}
+                  type="text"
+                  placeholder="Eg: 1"
+                  className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    errorState?.passedOn
+                      ? "border-2 border-red-500"
+                      : "border border-gray-300"
+                  }`}
+                />
+              </div>
+            </div>
+            <div className="">
+              <span className="italic text-xs mt-1">
+                Note:Please add the subject and enter the marks. Make sure all
+                subjects are included; missing any subject may lead to a
+                reduction in the index score.
+              </span>
             </div>
           </div>
-          <div className="">
-            <span className="italic text-xs mt-1">
-              Note:Please add the subject and enter the marks. Make sure all
-              subjects are included; missing any subject may lead to a reduction
-              in the index score.
-            </span>
+        )}
+
+        {/* SSLC  */}
+        {isSSLC && (
+          <div
+            className={`bg-white w-full h-auto py-5 px-4 rounded-[5px] flex flex-col ${
+              errorState?.marks && "border-2 border-red-500"
+            }`}
+          >
+            <div className="flex flex-col gap-1">
+              <h6 className="font-semibold">Qualifying Examination</h6>
+              <span className="text-gray-700 text-sm">
+                Enter the marks or grade obtained in your qualifying
+                examination.
+              </span>
+            </div>
+            <div className="">
+              <div className="flex flex-col">
+                <div className="grid grid-cols-1 gap-4">
+                  {/* Display existing subject fields in a 3-column grid on larger screens */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+                    {sslcSubjects.map((subject) => (
+                      <div key={subject} className="flex flex-col">
+                        <div className="flex items-center gap-2">
+                          <label className="text-gray-800 text-sm mb-1 font-medium capitalize">
+                            {subject.replace(/([A-Z])/g, " $1").trim()}
+                            <span className="text-red-500">*</span>
+                          </label>
+                        </div>
+                        <select
+                          onChange={(e) =>
+                            handleMarkChange(subject, e.target.value)
+                          }
+                          value={application.marks?.[subject] || ""}
+                          className="rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300 bg-white"
+                        >
+                          <option value="" disabled>
+                            Select grade
+                          </option>
+                          {sslcGradeOptions.map((grade) => (
+                            <option key={grade} value={grade}>
+                              {grade}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add new subject field */}
+                  {/* <div className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={newSubject}
+                      onChange={(e) => {
+                        setNewSubject(e.target.value);
+                        setErrorState((prev) => ({
+                          ...prev,
+                          marks: false,
+                        }));
+                      }}
+                      onKeyDown={(e) => e.key === "Enter" && addSubject()}
+                      placeholder="Enter subject name"
+                      className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
+                    />
+                    <button
+                      type="button"
+                      onClick={addSubject}
+                      className="bg-primary-500 text-white px-3 py-2 rounded-md text-sm hover:bg-primary-600"
+                    >
+                      Add Subject
+                    </button>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-2">
+              <div className="flex flex-col mt-3">
+                <label
+                  className={`text-sm mb-1 font-medium ${
+                    errorState?.passedOn ? "text-red-500" : "text-gray-800"
+                  }`}
+                >
+                  Chances Taken <span className="text-red-500">*</span>
+                </label>
+                <input
+                  required
+                  onChange={(e) => {
+                    setApplication((prevStat) => ({
+                      ...prevStat,
+                      chancesTaken: e.target.value,
+                    }));
+                    if (application?.passedOn !== "") {
+                      setErrorState((prev) => ({
+                        ...prev,
+                        passedOn: false,
+                      }));
+                      setErrorState((prev) => ({
+                        ...prev,
+                        passedOn: false,
+                      }));
+                    }
+                  }}
+                  value={application.chancesTaken}
+                  type="text"
+                  placeholder="Eg: 1"
+                  className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                    errorState?.passedOn
+                      ? "border-2 border-red-500"
+                      : "border border-gray-300"
+                  }`}
+                />
+              </div>
+            </div>
+            {/* <div className="">
+              <span className="italic text-xs mt-1">
+                Note:Please add the subject and enter the marks. Make sure all
+                subjects are included; missing any subject may lead to a
+                reduction in the index score.
+              </span>
+            </div> */}
           </div>
-        </div>
+        )}
 
         <div
           className={`bg-white w-full h-auto py-5 px-4 rounded-[5px] flex flex-col ${
