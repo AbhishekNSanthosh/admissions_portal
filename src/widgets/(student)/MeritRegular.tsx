@@ -1537,13 +1537,23 @@ export default function MeritRegular() {
                         </button>
                       </div>
                       <input
-                        onChange={(e) =>
-                          handleMarkChange(subject, e.target.value)
-                        }
+                        onChange={(e) => {
+                          let value = e.target.value.toUpperCase();
+                          
+                          // Allow only 1 letter followed by 1 number (e.g., A1, B2)
+                          if (/^[A-Z]?[0-9]?$/.test(value)) {
+                            // If first character is a number, ignore it
+                            if (/^[0-9]/.test(value)) {
+                              value = ""; // or keep only the number if you prefer
+                            }
+                            handleMarkChange(subject, value);
+                          }
+                        }}
                         value={mark}
                         type="text"
-                        placeholder="Enter grade"
+                        placeholder="Enter grade (e.g., A1, B2)"
                         className={`rounded-md uppercase px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 border border-gray-300`}
+                        maxLength={2}
                       />
                     </div>
                   ))}
