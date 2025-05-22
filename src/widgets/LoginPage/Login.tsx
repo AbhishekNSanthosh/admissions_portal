@@ -7,19 +7,22 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { app } from "@lib/firebase";
 import { useRouter } from "next/navigation";
 import easyToast from "@components/CustomToast";
 
-export default function Login() {
-  const [user, setUser] = useState<any>(null);
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [isSigningIn, setIsSigningIn] = useState(false);
+export default function LoginPage() {
+  const [tab, setTab] = useState<"login" | "signup">("login");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isSigningIn, setIsSigningIn] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [isSendingReset, setIsSendingReset] = useState(false);
@@ -32,49 +35,61 @@ export default function Login() {
       const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-      router.push("/dashboard");
+      easyToast({ message: "Login successful", type: "success" });
+      router.push("/dashboard/home");
     } catch (error) {
-      console.error("Error during sign-in:", error);
-      alert("Sign in failed. Please try again.");
+      easyToast({ message: "Google sign-in failed", type: "error" });
     } finally {
       setIsSigningIn(false);
     }
   };
 
-  const handleEmailPasswordSignIn = async () => {
-    setErrorMsg(null);
+  const handleLogin = async () => {
     if (!email || !password) {
-      setErrorMsg("Please enter both email and password.");
-      easyToast({
-        message: "Please enter both email and password.",
-        type: "error",
-      });
+      easyToast({ message: "Email and password required", type: "error" });
       return;
     }
     try {
       setIsSigningIn(true);
       const auth = getAuth(app);
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      await signInWithEmailAndPassword(auth, email, password);
       easyToast({
         message: "Login successful",
         desc: "Redirecting to dashboard",
         type: "success",
       });
-      setUser(userCredential.user);
+      router.push("/dashboard/home");
+    } catch (error) {
+      console.log(error)
+      easyToast({
+        message: "Login failed",
+        desc: "Check your credentials.",
+        type: "error",
+      });
+    } finally {
+      setIsSigningIn(false);
+    }
+  };
+
+  const handleSignUp = async () => {
+    if (!email || !password ) {
+      easyToast({ message: "All fields are required", type: "error" });
+      return;
+    }
+    try {
+      setIsSigningIn(true);
+      const auth = getAuth(app);
+      await createUserWithEmailAndPassword(auth, email, password);
+      easyToast({
+        message: "Account created",
+        desc: "Redirecting to dashboard",
+        type: "success",
+      });
       router.push("/dashboard/home");
     } catch (error: any) {
-      console.error("Email/Password sign-in error:", error);
-      setErrorMsg(
-        error.message || "Failed to sign in. Please check your credentials."
-      );
       easyToast({
-        message: "Failed to sign in",
-        desc: "Please check your credentials.",
+        message: "Sign-up failed",
+        desc: error.message || "Something went wrong",
         type: "error",
       });
     } finally {
@@ -105,8 +120,8 @@ export default function Login() {
       setResetEmail("");
     } catch (error: any) {
       easyToast({
-        message: "Error",
-        desc: error.message || "Failed to send reset email.",
+        message: "Reset failed",
+        desc: error.message || "Could not send reset email",
         type: "error",
       });
     } finally {
@@ -118,12 +133,10 @@ export default function Login() {
     const auth = getAuth(app);
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
-        setUser(currentUser);
-        router.push("/dashboard");
+        router.push("/dashboard/home");
       }
       setIsCheckingAuth(false);
     });
-
     return () => unsubscribe();
   }, [router]);
 
@@ -136,111 +149,102 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center w-full">
-      <div className="px-[5vw] py-[3rem]">
-        <Image
-          src={"/Carmelpoly.png"}
-          width={1000}
-          height={1000}
-          className="w-[28rem]"
-          alt="Logo"
-        />
+    <div className="flex flex-col items-center justify-center min-h-screen px-[5vw]">
+      <Image
+        src={"/Carmelpoly.png"}
+        width={1000}
+        height={1000}
+        className="w-[25rem] mb-10"
+        alt="Logo"
+      />
+
+      <div className="flex items-center space-x-4 mb-6">
+        <button
+          onClick={() => setTab("signup")}
+          className={`text-sm font-medium px-4 py-2 rounded-md ${
+            tab === "signup" ? "bg-primary-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Create Account
+        </button>
+        <button
+          onClick={() => setTab("login")}
+          className={`text-sm font-medium px-4 py-2 rounded-md ${
+            tab === "login" ? "bg-primary-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Login
+        </button>
       </div>
-      <div className="flex lg:flex-row md:flex-row flex-col items-center justify-center w-full">
-        <div className="flex-[1.5] w-full flex items-center justify-center">
+
+      <div className="w-full max-w-sm flex flex-col gap-3">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          className="border border-gray-300 rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+          disabled={isSigningIn}
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className="border border-gray-300 rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+          disabled={isSigningIn}
+        />
+        <button
+          disabled={isSigningIn}
+          onClick={tab === "login" ? handleLogin : handleSignUp}
+          className={`bg-primary-500 text-white rounded-md py-3 text-sm hover:bg-primary-600 ${
+            isSigningIn ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
+          }`}
+        >
+          {isSigningIn
+            ? "Please wait..."
+            : tab === "login"
+            ? "Login"
+            : "Create Account"}
+        </button>
+
+        {tab === "login" && (
+          <button
+            onClick={() => setShowResetModal(true)}
+            className="text-sm text-blue-600 mt-1 hover:underline text-start"
+            disabled={isSigningIn}
+          >
+            Forgot password?
+          </button>
+        )}
+
+        <div className="flex items-center gap-2 w-full mt-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="text-gray-400 text-sm">OR</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
+
+        <button
+          disabled={isSigningIn}
+          className={`flex items-center justify-center border border-gray-400 bg-white gap-3 py-3 rounded-md ${
+            isSigningIn ? "opacity-70" : ""
+          }`}
+          onClick={handleGoogleSignIn}
+        >
           <Image
-            src={"/login.svg"}
+            src={"/google.png"}
             width={1000}
             height={1000}
-            className="md:w-[28rem] w-[15rem]"
-            alt="Login illustration"
+            className="w-[2rem]"
+            alt="Google logo"
           />
-        </div>
-        <div className="flex-1 w-full flex flex-col items-start justify-center gap-4 px-[5vw] md:px-0">
-          <div className="flex flex-col gap-1">
-            <span className="text-2xl font-bold">Welcome!</span>
-            <span className="text-gray-700">
-              The smarter way to manage your admissions.
-            </span>
-          </div>
-          <div className="w-full max-w-sm flex flex-col gap-3">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              className="border border-gray-300 rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 w-full"
-              disabled={isSigningIn}
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="border border-gray-300 rounded-md px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 w-full"
-              disabled={isSigningIn}
-            />
-            {errorMsg && <p className="text-red-500 text-xs">{errorMsg}</p>}
-            <button
-              disabled={isSigningIn}
-              onClick={handleEmailPasswordSignIn}
-              className={`bg-primary-500 text-white rounded-md py-3 text-sm hover:bg-primary-600 ${
-                isSigningIn ? "opacity-70 cursor-not-allowed" : "cursor-pointer"
-              }`}
-            >
-              {isSigningIn ? "Please wait..." : "Login"}
-            </button>
-            <button
-              onClick={() => setShowResetModal(true)}
-              className="text-sm text-blue-600 mt-1 hover:underline text-start"
-              disabled={isSigningIn}
-            >
-              Forgot password?
-            </button>
-          </div>
-
-          <div className="flex items-center gap-2 w-full max-w-sm">
-            <hr className="flex-grow border-gray-300" />
-            <span className="text-gray-400 text-sm">OR</span>
-            <hr className="flex-grow border-gray-300" />
-          </div>
-
-          <div className="w-full max-w-sm flex flex-col gap-3">
-            <button
-              disabled={isSigningIn}
-              className={`flex cursor-pointer w-full flex-row items-center justify-center border-[1px] bg-white gap-3 border-gray-400 px-[3rem] py-3 rounded-md ${
-                isSigningIn ? "opacity-70" : ""
-              }`}
-              onClick={handleGoogleSignIn}
-            >
-              {isSigningIn ? (
-                "Please wait..."
-              ) : (
-                <>
-                  <Image
-                    src={"/google.png"}
-                    width={1000}
-                    height={1000}
-                    className="w-[2rem]"
-                    alt="Google logo"
-                  />
-                  <span>Continue with Google</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <span className="text-gray-700">
-              Seamless and secure sign-in with your Google account.
-            </span>
-          </div>
-        </div>
+          <span>Continue with Google</span>
+        </button>
       </div>
 
       {/* Forgot Password Modal */}
       {showResetModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
           <div className="bg-white w-full max-w-sm rounded-lg p-6 shadow-lg relative">
             <h2 className="text-lg font-semibold mb-2">Reset Password</h2>
             <p className="text-sm text-gray-600 mb-4">
