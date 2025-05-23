@@ -51,6 +51,8 @@ export default function MeritRegular() {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [hasDoneGovtQuotaApplications, setHasDoneGovtQuotaApplications] =
     useState(false);
+  const [sameAsPermanent, setSameAsPermanent] = useState(false);
+
   const [errorState, setErrorState] = useState<ErrorState>({
     id: false,
     generatedId: false,
@@ -710,6 +712,34 @@ export default function MeritRegular() {
     downloadLink.click();
     document.body.removeChild(downloadLink);
   };
+
+  useEffect(() => {
+    if (sameAsPermanent) {
+      setApplication((prev) => ({
+        ...prev,
+        guardian: {
+          ...prev.guardian,
+          addressLineOne: prev.addressLine1,
+          addressLineTwo: prev.addressLine2,
+          street: prev.street,
+          district: prev.district,
+          pincode: prev.pinCode,
+        },
+      }));
+    } else {
+      setApplication((prev) => ({
+        ...prev,
+        guardian: {
+          ...prev.guardian,
+          addressLineOne: "",
+          addressLineTwo: "",
+          street: "",
+          district: "",
+          pincode: "",
+        },
+      }));
+    }
+  }, [sameAsPermanent]);
 
   if (isLoading) {
     return (
@@ -1924,6 +1954,14 @@ export default function MeritRegular() {
               Provide guardian's details.
             </span>
           </div>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={sameAsPermanent}
+              onChange={(e) => setSameAsPermanent(e.target.checked)}
+            />
+            <span>Same as Permanent Address</span>
+          </label>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Name of Guardian */}
             <div className="flex flex-col">
