@@ -45,6 +45,7 @@ export default function LateralEntry() {
   const [uploading, setUploading] = useState(false);
   const [finished, setFinished] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isPlusTwo, setIsPlusTwo] = useState(false);
   const [hasDoneGovtQuotaApplications, setHasDoneGovtQuotaApplications] =
     useState(false);
   const [errorState, setErrorState] = useState<ErrorState>({
@@ -1384,6 +1385,11 @@ export default function LateralEntry() {
                       course: false,
                     }));
                   }
+                  if (e.target.value === "XII") {
+                    setIsPlusTwo(true);
+                  } else {
+                    setIsPlusTwo(false);
+                  }
                 }}
                 value={application.course}
                 className={`rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
@@ -1569,29 +1575,60 @@ export default function LateralEntry() {
                 </div>
 
                 {/* Add new subject field */}
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={newSubject}
-                    onChange={(e) => {
-                      setNewSubject(e.target.value);
-                      setErrorState((prev) => ({
-                        ...prev,
-                        marks: false,
-                      }));
-                    }}
-                    onKeyDown={(e) => e.key === "Enter" && addSubject()}
-                    placeholder="Enter subject name"
-                    className="border capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
-                  />
-                  <button
-                    type="button"
-                    onClick={addSubject}
-                    className="bg-primary-500 text-white px-3 py-2 rounded-md text-sm hover:bg-primary-600"
-                  >
-                    Add Subject
-                  </button>
-                </div>
+                {isPlusTwo ? (
+                  <div className="flex md:flex-row flex-col items-center gap-2 w-full md:w-[32.9vw]">
+                    <select
+                      value={newSubject}
+                      onChange={(e) => {
+                        setNewSubject(e.target.value);
+                        setErrorState((prev) => ({
+                          ...prev,
+                          marks: false,
+                        }));
+                      }}
+                      className="border w-full md:w-auto capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
+                    >
+                      <option value="">Select subject</option>
+                      {optns.map((subject) => (
+                        <option key={subject} value={subject}>
+                          {subject}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={addSubject}
+                      className="bg-primary-500 w-full md:w-auto text-white px-3 py-2 rounded-md text-sm hover:bg-primary-600"
+                    >
+                      Add Subject
+                    </button>
+                  </div>
+                ) : (
+                   <div className="flex md:flex-row flex-col items-center gap-2 w-full md:w-[32.9vw]">
+                    <input
+                      type="text"
+                      value={newSubject}
+                      onChange={(e) => {
+                        setNewSubject(e.target.value);
+                        setErrorState((prev) => ({
+                          ...prev,
+                          marks: false,
+                        }));
+                      }}
+                      onKeyDown={(e) => e.key === "Enter" && addSubject()}
+                      placeholder="Enter subject name"
+                      className="border w-full md:w-auto capitalize border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 flex-1"
+                    />
+                    <button
+                      type="button"
+                      onClick={addSubject}
+                      className="bg-primary-500 w-full md:w-auto text-white px-3 py-2 rounded-md text-sm hover:bg-primary-600"
+                    >
+                      Add Subject
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

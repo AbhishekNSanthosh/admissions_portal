@@ -88,44 +88,55 @@ export const gradeOptions = [
 // subjects.js (or any file you want)
 // subjects.js
 export const optns = [
-    // Plus Two Science subjects
-    "Physics",
-    "Chemistry",
-    "Mathematics",
-    "Biology",
-    "Malayalam",
-    "Computer Science",
-    "Electronics",
-    "Information Technology",
-    "Engineering Graphics",
-    "Biotechnology",
-    "Technical Vocational Subject",
+  // Core Science Subjects
+  "Physics",
+  "Chemistry",
+  "Mathematics",
+  "Biology",
 
-    // Plus Two Commerce/Other common subjects
-    "Business Studies",
-    "Entrepreneurship",
-    "Economics",
-    "Accountancy",
-    "Physical Education",
-    "English",
-    "Hindi",
+  // Languages
+  "English",
+  "Malayalam",
+  "Hindi",
+  "Sanskrit",
+  "French",
+  "Arabic",
 
-    // ITI typical subjects (basic/common)
-    "Fitter",
-    "Electrician",
-    "Mechanic",
-    "Welder",
-    "Plumber",
-    "Carpenter",
-    "Automobile",
-    "Machinist",
-    "Computer Operator and Programming Assistant (COPA)",
-    "Draftsman Civil",
-    "Draftsman Mechanical",
-    "Tool and Die Maker",
-    "Information Technology and Electronics System Maintenance",
+  // Computer & IT
+  "Computer Science",
+  "Informatics Practices",
+  "Information Technology",
+  "Electronics",
 
-    "Agriculture",
-    "Other",
+  // Vocational & Applied
+  "Engineering Graphics",
+  "Biotechnology",
+  "Technical Vocational subject",
+  "Agriculture",
+  "Home Science",
+  "Geology",
+  "Statistics",
+
+  // Commerce Subjects (offered as electives in some boards)
+  "Business Studies",
+  "Entrepreneurship",
+  "Accountancy",
+  "Economics",
+
+  // VHSE Specializations (only in VHSE schools)
+  "Livestock Management",
+  "Medical Laboratory Technology",
+  "Computer Applications",
+  "Automobile Technology",
+  "Civil Construction Technology",
+  "Fashion and Apparel Design",
+  "Tourism and Hospitality",
+  "Health Inspector",
+  "Agronomy",
+
+  // Others
+  "Environmental Science",
+  "Psychology",
+  "Other"
 ];
 
