@@ -167,7 +167,7 @@ const ApplicationPDFDocument = ({
         </View>
         <Text style={styles.title}>Carmel Polytechnic College</Text>
         <Text style={styles.subtitle}>
-          Application for Polytechnic Admission 2024-2025
+          Application for Polytechnic Admission 2025-2026
         </Text>
         <Text style={{ marginBottom: 4 }}>{application?.title}</Text>
         <Text style={{ fontSize: 8 }}>
